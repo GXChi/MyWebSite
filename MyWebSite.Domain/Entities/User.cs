@@ -11,6 +11,8 @@ namespace MyWebSite.Domain.Entities
 
         public string PassWrod { get; set; }
 
+        public string Name { get; set; }
+
         public string EMail { get; set; }
 
         public int IsDeleted { get; set; }
