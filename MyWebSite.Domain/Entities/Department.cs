@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyWebSite.Domain.Entities
 {
-    public class Department
+    public class Department : Entity
     {
     }
 }
