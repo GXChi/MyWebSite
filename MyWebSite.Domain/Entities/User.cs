@@ -1,10 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
+using MyWebSite.Domain.Entities;
 
-namespace MyWebSite.Domain.Entitys
+namespace MyWebSite.Domain.Entities
 {
-    class User
+    public class User : Entity
     {
+        public string UserName { get; set; }
+
+        public string PassWrod { get; set; }
+
+        public string EMail { get; set; }
+
+        public int IsDeleted { get; set; }
+
+        public virtual Department Department { get; set; }
+
+        public Guid DepartmentId { get; set; }
+
+
     }
 }
