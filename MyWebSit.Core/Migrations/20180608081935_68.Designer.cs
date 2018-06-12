@@ -10,8 +10,8 @@ using MyWebSit.Core;
 namespace MyWebSit.Core.Migrations
 {
     [DbContext(typeof(MyWebSiteDbContext))]
-    [Migration("20180606113310_Create")]
-    partial class Create
+    [Migration("20180608081935_68")]
+    partial class _68
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,10 @@ namespace MyWebSit.Core.Migrations
                     b.Property<DateTime?>("CreateTime");
 
                     b.Property<Guid>("CreateUserId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid>("ParentId");
 
                     b.HasKey("Id");
 
@@ -58,11 +62,9 @@ namespace MyWebSit.Core.Migrations
 
                     b.Property<Guid>("CreateUserId");
 
-                    b.Property<Guid>("DepartmentId");
-
                     b.Property<string>("EMail");
 
-                    b.Property<int>("IsDeleted");
+                    b.Property<string>("Name");
 
                     b.Property<string>("PassWrod");
 
@@ -70,17 +72,7 @@ namespace MyWebSit.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("MyWebSite.Domain.Entities.User", b =>
-                {
-                    b.HasOne("MyWebSite.Domain.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

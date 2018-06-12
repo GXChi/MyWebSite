@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyWebSit.Core.Migrations
 {
-    public partial class Create : Migration
+    public partial class _68 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,9 @@ namespace MyWebSit.Core.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreateUserId = table.Column<Guid>(nullable: false),
-                    CreateTime = table.Column<DateTime>(nullable: true)
+                    CreateTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    ParentId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,37 +44,25 @@ namespace MyWebSit.Core.Migrations
                     CreateTime = table.Column<DateTime>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     PassWrod = table.Column<string>(nullable: true),
-                    EMail = table.Column<string>(nullable: true),
-                    IsDeleted = table.Column<int>(nullable: false),
-                    DepartmentId = table.Column<Guid>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    EMail = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_DepartmentId",
-                table: "Users",
-                column: "DepartmentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Departments");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Departments");
         }
     }
 }

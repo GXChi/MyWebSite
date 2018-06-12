@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyWebSit.Core;
+using MyWebSit.Core.Repositories;
+using MyWebSite.Application.UserApp;
+using MyWebSite.Domain.IRepositories;
 
 namespace MyWebSite
 {
@@ -24,7 +27,11 @@ namespace MyWebSite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSession();
             services.AddDbContext<MyWebSiteDbContext>(optios => optios.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserAppService, UserAppService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,15 +48,14 @@ namespace MyWebSite
             }
 
             app.UseStaticFiles();
-
+            app.UseSession(); //内存存储Seesion数据
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            SeedData.Initialize(app.ApplicationServices);//初始化数据
+          
         }
     }
 }

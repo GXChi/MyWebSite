@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MyWebSit.Core;
 
 namespace MyWebSite
 {
@@ -14,7 +16,23 @@ namespace MyWebSite
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    SeedData.Initialize(services); //初始化数据
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+
+                    logger.LogError(ex, "An error occurrend seeding the DB");
+                }
+
+                host.Run();
+            }
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Contact";
+}
+@model MyWebSite.Models.LoginModel
+<div class="login">    
+    <form method="post" asp-action="Index" asp-controller="Login">
+        <div class="loginfrom">
+            <div>
+                <input type="text" name="UserName" placeholder="用户名" />
+            </div>
+            <div>
+                <input type="text" name="Password" placeholder="密码" />
+            </div>
+            <div>
+                <input type="submit" value="登录" id="submit" />
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>    
+    $(function () {
+        $("#submit").click(function(){
+            var username = $("[name='UserName']").val();
+            var password = $("[name='Password']").val();
+            if (username == "") {
+                alert("用户名不能为空");
+                //$("username").val("用户名不能为空");
+            }
+            else if (password == "") {
+                alert("密码不能为空");
+                //$("#passwordError").val("密码不能为空");
+
+            }
+        });
+        
+    });
+</script>
+<style>
+    .Login {
+        text-align: center; /*让div内部文字居中*/
+        background-color: rgba(211, 202, 202, 0.37);
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .loginfrom {
+        text-align: center; /*让div内部文字居中*/
+        background-color: #fff;
+        border-radius: 20px;
+        width: 350px;
+        height: 300px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+</style>  
