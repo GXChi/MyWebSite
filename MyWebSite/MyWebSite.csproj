@@ -5,6 +5,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\0dc6a7c8-7bc5-4318-abf3-8ca9150d3e9e.slsx" />
+    <Content Remove="wwwroot\0e56c852-67b8-4979-b92e-312cc4f57584.slsx" />
+    <Content Remove="wwwroot\258c7bf7-bd96-4bc6-a826-1531ee7486a6.slsx" />
+    <Content Remove="wwwroot\29d4abc8-1ce1-41d5-96e2-3f8aa39447d1.slsx" />
+    <Content Remove="wwwroot\2d87c2dd-6ae9-40ac-b186-61425ff8fc80.slsx" />
+    <Content Remove="wwwroot\34a56b61-77de-4ff8-ba1d-24ee74bc2732.slsx" />
+    <Content Remove="wwwroot\3ea67d70-6db8-4817-a813-ebada7979bde.slsx" />
+    <Content Remove="wwwroot\480d9087-e041-45b2-b223-200932e70a54.slsx" />
+    <Content Remove="wwwroot\4d6fd1c1-ba5b-43ae-aa5d-b3d6dd790097.slsx" />
+    <Content Remove="wwwroot\5f0a6a26-7689-4fc7-8862-80d3bf031647.slsx" />
+    <Content Remove="wwwroot\72afc186-f163-4b64-9be5-1d935c9de3fb.slsx" />
+    <Content Remove="wwwroot\72d0f840-66b9-4375-80e7-b5a1f9e59046.slsx" />
+    <Content Remove="wwwroot\76a391c7-e907-4c63-bb12-de1d8b80e641.slsx" />
+    <Content Remove="wwwroot\77472927-7001-4401-a152-2979c12ef543.slsx" />
+    <Content Remove="wwwroot\7c6fa911-2685-4124-bd1a-11693f440c3f.slsx" />
+    <Content Remove="wwwroot\7e18cd71-2cc6-447b-962d-c8cf8a23a41f.slsx" />
+    <Content Remove="wwwroot\84d16fc9-7343-413e-a30d-bfa5e85bf136.slsx" />
+    <Content Remove="wwwroot\9c360a84-e21a-4d0e-bde4-826632ab870f.slsx" />
+    <Content Remove="wwwroot\b2926f6b-caad-4897-80f1-bda54273a192.slsx" />
+    <Content Remove="wwwroot\bb10b268-b925-44ce-b6b1-4f81d2700994.slsx" />
+    <Content Remove="wwwroot\bc6cf01c-ff8f-4d31-8518-a3b3829bf2dd.slsx" />
+    <Content Remove="wwwroot\be855f3a-29e6-489a-a8c1-520fe93951c2.slsx" />
+    <Content Remove="wwwroot\beb756d5-33cd-4a25-a704-65d61d124beb.slsx" />
+    <Content Remove="wwwroot\cd113ede-547b-47e2-a711-bbbead3997c0.slsx" />
+    <Content Remove="wwwroot\e2f641df-fb21-4129-8dcc-d88e5809b5a3.slsx" />
+    <Content Remove="wwwroot\e624999e-9c61-4131-a0a9-560d4a3a8d16.slsx" />
+    <Content Remove="wwwroot\e7afd19d-7d4d-4790-8d1a-a03aad93d253.slsx" />
+    <Content Remove="wwwroot\f3baad5f-63fa-473a-b18d-09ba211928f5.slsx" />
+    <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\fb9f88e8-df2c-426f-bb53-a6235be81f05.slsx" />
+    <Content Remove="wwwroot\fcbdf907-71aa-4837-945b-470951d96ae5.slsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />

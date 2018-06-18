@@ -28,7 +28,8 @@ namespace MyWebSite
         {
             services.AddMvc();
             services.AddSession();
-            services.AddDbContext<MyWebSiteDbContext>(optios => optios.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<MyWebSiteDbContext>(optios =>
+               optios.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserAppService, UserAppService>();
 
@@ -55,7 +56,7 @@ namespace MyWebSite
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-          
+
         }
     }
 }

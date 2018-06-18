@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Excel ID="Import_Excel" HeadRowNo ="0" DataStartRowNo="1" DynamicTable="True" DynamicStartColNo="3">
+    <Col ID="姓名" ColNo="0" Desc="姓名" Type="String" Necessary="True" Length="100"/>
+    <Col ID="性别" ColNo="1" Desc="性别" Type="String" Necessary="True" Length="1"/>
+    <Col ID="电话" ColNo="2" Desc="电话" Type="Int" Necessary="False" Length="20"/>
+  </Excel>
+</Root>

@@ -22,8 +22,8 @@ namespace MyWebSite.Controllers
         }
         public IActionResult Index()
         {
-            var model = _userAppService.GetAll();
-            return View(model);
+            //var model = _userAppService.GetAll();
+            return View();
         }
 
         public IActionResult Create(UserDto user)

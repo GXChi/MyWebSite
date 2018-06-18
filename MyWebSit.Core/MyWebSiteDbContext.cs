@@ -11,9 +11,10 @@ namespace MyWebSit.Core
         public MyWebSiteDbContext(DbContextOptions<MyWebSiteDbContext> options) : base(options)
         { }
 
+
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Menu> Menus { get; set; }           
+        public DbSet<Menu> Menus { get; set; }     
 
         public DbSet<Role>  Roles { get; set; }
 
