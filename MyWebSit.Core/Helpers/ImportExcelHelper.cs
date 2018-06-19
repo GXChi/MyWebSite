@@ -9,7 +9,6 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using static Microsoft.IdentityModel.Protocols.WsFederation.WsFederationConstants;
 
 namespace MyWebSit.Core.Helpers
 {
@@ -22,6 +21,7 @@ namespace MyWebSit.Core.Helpers
         Hashtable methodHashtable = new Hashtable();
         public ImportExcelHelper(string excelID, string importFileName)
         {
+            importFileName = @"C:\Users\lqit-tcyunwei\source\repos\MyWebSite\MyWebSite\UpLoadFiles\e542d7ca-5bf7-47b0-811b-f1348ce07a8b.xlsx";
             FileStream file = new FileStream(importFileName, FileMode.Open, FileAccess.Read);
             string fileType = importFileName.Substring(importFileName.LastIndexOf("."));
             if (fileType == ".xls")

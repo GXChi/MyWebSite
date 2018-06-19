@@ -22,6 +22,5 @@ namespace MyWebSite.Application.Common
 
         public SortedDictionary<int,string> ColsType { get; set; }
 
-
     }
 }

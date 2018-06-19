@@ -81,80 +81,20 @@ namespace MyWebSite.Controllers
             }            
         }
 
-        /// <summary>
-        /// 导入Excel
-        /// </summary>
-        /// <param name="excelFile"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ContentResult ImportDataExcelUploadify(IFormFile excelFile)
-        {
-            Guid guid = Guid.NewGuid();
-            string filePath = "";
-            string ext = Path.GetExtension(excelFile.FileName);
-            if (ext == ".xls" || ext == ".xlsx")
-            {
-                string fileExt = excelFile.FileName.Substring(excelFile.FileName.LastIndexOf("."));
-                filePath = _hostingEnvironment.ContentRootPath + "\\UpLoadFiles\\";
-
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
-                filePath += guid + fileExt;
-                if (excelFile.Length > 0)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        excelFile.CopyTo(stream);
-                    }
-                }
-            }
-
-            //long size = excelFile.Sum(f => f.Length);
-            //Guid guid = Guid.NewGuid();
-            //string filePath = "";
-            //foreach (var formFile in excelFile)
-            //{
-            //    string ext = Path.GetExtension(formFile.FileName);
-            //    if (ext == ".xls" || ext == ".xlsx")
-            //    {
-            //        string fileExt = formFile.FileName.Substring(formFile.FileName.LastIndexOf("."));
-            //        filePath = _hostingEnvironment.ContentRootPath + "\\UpLoadFiles\\";
-
-            //        if (!Directory.Exists(filePath))
-            //        {
-            //            Directory.CreateDirectory(filePath);
-            //        }
-            //        filePath += guid + fileExt;
-            //        if (formFile.Length > 0)
-            //        {
-            //            using (var stream = new FileStream(filePath, FileMode.Create))
-            //            {
-            //                formFile.CopyTo(stream);
-            //            }
-            //        }
-            //    }
-
-        //}
-            return Content(filePath);           
-        }
-
-
-        public IActionResult SaveImportFile(string excelFile)
+        public IActionResult SaveImportFile(string excelPath)
         {
             try
             {
-                string saveExcelFilePath = excelFile; //服务器保存Excel文件的路径
+                string saveExcelFilePath = excelPath; //服务器保存Excel文件的路径
                 string errorMsg = string.Empty;       //验证错误信息
               
-                DataTable dataTable = GetDataTableByExcel(out saveExcelFilePath,out errorMsg);
+                DataTable dataTable = GetDataTableByExcel(saveExcelFilePath,out errorMsg);
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
                     return Json(errorMsg);
                 }
                 //DeleteFile(excelFile);
-                return View(excelFile);
+                return View(excelPath);
             }
             catch (Exception ex)
             {
@@ -169,9 +109,9 @@ namespace MyWebSite.Controllers
         /// <param name="saveExcelFilePath"></param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public DataTable GetDataTableByExcel(out string saveExcelFilePath, out string errorMsg)
+        public DataTable GetDataTableByExcel(string saveExcelFilePath, out string errorMsg)
         {
-            saveExcelFilePath = string.Empty;
+            
             errorMsg = string.Empty;
             string excelIDName = "Import_Excel";
 

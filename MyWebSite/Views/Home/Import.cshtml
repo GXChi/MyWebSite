@@ -1,5 +1,42 @@
-﻿@{
-    ViewData["Title"] = "About";
-}
-<input type="file" value="选择文件">
-<input type="button" va/>
+﻿<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Import1">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" name="files" id="files"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="button" value="上传" id="upload"/>
+        </div>
+    </div>
+</form>
+<script src="~/js/jquery.js"></script>
+<script>
+    $(function () { 
+        $("#upload").click(function (evt) { 
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Home/Import1",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (message) { 
+                    alert(message);
+                },
+                error: function () {
+                    alert("上传文件出现错误！")
+
+                }
+
+            })
+        })
+
+    })
+</script>

@@ -2,36 +2,56 @@
     ViewData["Title"] = "Index";
 }
 
-<form method="post" enctype="multipart/form-data" asp-controller="FileImport" asp-action="SaveImportFile">
+<form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <div class="col-md-10">
             <p>文件导入</p>
-            <input class="btn btn-info" type="file" name="excelFile" id="ImportDataExcelUploadify" />
+            <input class="btn btn-info" type="file" name="files" id="excelUploadify" />
+            <input type="hidden" value="" name="newpath"/>
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <input class="btn btn-primary" type="submit" value="上传" />
+            <input class="btn btn-primary" type="button" value="上传" id="confirmUpload"/>
         </div>
     </div>
 </form>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     $(function () {
-        //var file = new FormData($("#ImportDataExcelUploadify")[0])
-       
-        $("#ImportDataExcelUploadify").change(function () {
-                   
+        $("#excelUploadify").change(function () {
+            var path = $("[name ='newpath']");
+            var files = $("#excelUploadify").get(0).files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+
             $.ajax({
                 type: "POST",
-                url: "/FileImport/ImportDataExcelUploadify",
-                //dataType: "json",
-                data: { excelFile: new FormData($("ImportDataExcelUploadify")[0]) },
-                success: function (datas) { 
-                    file.val(datas)
-                },
-            })
+                url: "/Common/UploadExcelFiles",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (newpath) {
+                    path.val(newpath)
+                }
+            });
         });
-       
+
+        $("#confirmUpload").click(function () {
+            data = $("[name ='newpath']").val();
+            $.ajax({
+                type: "POST",
+                url: "/FileImport/SaveImportFile",
+                data: { "excelPath":data },
+                success: function () {
+                    alert("导入成功");
+                 },
+                //error: function () { }
+                
+            })
+
+        })
     })
 </script>
