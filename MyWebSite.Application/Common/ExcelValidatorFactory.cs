@@ -17,7 +17,7 @@ namespace MyWebSite.Application.Common
             try
             {
                 xmlDoc.Load(configPath + configXMLFile);
-            }
+            } 
             catch (Exception ex)
             {
                 throw ex;
@@ -43,9 +43,11 @@ namespace MyWebSite.Application.Common
                 foreach (XmlElement colNode in colList)
                 {
                     string colNo = colNode.GetAttribute("ColNo");
+
                     string id = colNode.GetAttribute("ID");                   
                     string desc = colNode.GetAttribute("Desc");
                     string type = colNode.GetAttribute("Type");
+
                     string necessary = colNode.GetAttribute("Necessary");
                     string regex = colNode.GetAttribute("Regex");
                     string regexMessage = colNode.GetAttribute("RegexMessage");
@@ -53,6 +55,7 @@ namespace MyWebSite.Application.Common
                     if (!string.IsNullOrEmpty(colNode.GetAttribute("Length")))
                         length = Convert.ToInt32(colNode.GetAttribute("Length"));
                     int? minValue = string.IsNullOrEmpty(colNode.GetAttribute("MinValue")) ? int.MinValue : Convert.ToInt32(colNode.GetAttribute("MinValue"));
+                    int? maxValue = string.IsNullOrEmpty(colNode.GetAttribute("MaxValue")) ? int.MaxValue : Convert.ToInt32(colNode.GetAttribute("MaxValue"));
                     container.ColsName.Add(Convert.ToInt32(colNo),id);
                     container.ColsDesc.Add(Convert.ToInt32(colNo),desc);
                     container.ColsType.Add(Convert.ToInt32(colNo),type.ToUpper());
@@ -62,6 +65,10 @@ namespace MyWebSite.Application.Common
                     {
                         case "STRING":
                             validator = new StringValidator(Convert.ToBoolean(necessary), Convert.ToInt32(length), regex, regexMessage);
+                            container.FormatValidators.Add(Convert.ToInt32(colNo), validator);
+                            break;
+                        case "INT":
+                            validator = new IntegerValidator(Convert.ToBoolean(necessary), minValue, maxValue);
                             container.FormatValidators.Add(Convert.ToInt32(colNo), validator);
                             break;
                         default:
