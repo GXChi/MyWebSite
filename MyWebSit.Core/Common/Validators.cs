@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MyWebSite.Application.Common
+namespace MyWebSite.Core.Common
 {
     /// <summary>
     /// 验证器基类
@@ -97,7 +97,7 @@ namespace MyWebSite.Application.Common
             get { return errormessage; }
         }
 
-        public IntegerValidaotr(Boolean isNecessary, int? minValue, int? maxValue)
+        public IntegerValidator(Boolean isNecessary, int? minValue, int? maxValue)
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
@@ -135,7 +135,7 @@ namespace MyWebSite.Application.Common
                     }
 
                 }
-                catch (Exception ex)
+                catch
                 {
                     result = false;
                     errormessage = "值不是整形";
@@ -145,7 +145,9 @@ namespace MyWebSite.Application.Common
         }
     }
 
-
+    /// <summary>
+    /// 日期类型验证器
+    /// </summary>
     public class DataTimeValidator : IValidators
     {
         Boolean isNecessary; //是否必须
@@ -208,74 +210,76 @@ namespace MyWebSite.Application.Common
             }
             return result;
         }
+    }
+    /// <summary>
+    /// 数字验证器
+    /// </summary>
+    public class DecimalValidator : IValidators
+    {
+        Boolean isNecessary;
+        int? decimals;       //字符串长度
+        string errorMessage;
 
+        public string ErrorMessage { get { return errorMessage; } }
 
-        public class DecimalValidator : IValidators
+        public DecimalValidator(bool isNecessary, int? decimals)
         {
-            Boolean isNecessary;
-            int? decimals;       //字符串长度
-            string errorMessage;
+            this.isNecessary = isNecessary;
+            this.decimals = decimals;
+        }
 
-            public string ErrorMessage { get { return errorMessage; } }
 
-            public DecimalValidator(bool isNecessary, int? decimals)
+        /// <summary>
+        /// 验证
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool Validate(object obj)
+        {
+            Boolean result = true;
+            if (obj != null)
             {
-                this.isNecessary = isNecessary;
-                this.decimals = decimals;
-            }
-
-
-            /// <summary>
-            /// 验证
-            /// </summary>
-            /// <param name="obj"></param>
-            /// <returns></returns>
-            public bool Validate(object obj)
-            {
-                Boolean result = true;
-                if (obj != null)
+                string tmp = obj.ToString();
+                if (string.IsNullOrEmpty(tmp))
                 {
-                    string tmp = obj.ToString();
-                    if (string.IsNullOrEmpty(tmp))
+                    if (isNecessary)
                     {
-                        if (isNecessary)
-                        {
-                            result = false;
-                            errorMessage = "值不能为空";
-                        }
-                    }
-                    else
-                    {
-                        if (tmp.IndexOf(".") > 0)
-                        {
-                            string mTmp = tmp.Substring(tmp.IndexOf(".") + 1);
-                            if (!string.IsNullOrEmpty(mTmp) && mTmp.Length > decimals)
-                            {
-                                result = false;
-                                errorMessage = $"小数位不能超过{decimals.Value}";
-                            }
-                            if (result)
-                            {
-                                try
-                                {
-                                    decimal data = Convert.ToDecimal(tmp);
-                                }
-                                catch
-                                {
-                                    result = false;
-                                    errorMessage = "值不是实数类型";
-                                }
-                            }
-                        }
+                        result = false;
+                        errorMessage = "值不能为空";
                     }
                 }
                 else
                 {
-                    result = false;
+                    if (tmp.IndexOf(".") > 0)
+                    {
+                        string mTmp = tmp.Substring(tmp.IndexOf(".") + 1);
+                        if (!string.IsNullOrEmpty(mTmp) && mTmp.Length > decimals)
+                        {
+                            result = false;
+                            errorMessage = $"小数位不能超过{decimals.Value}";
+                        }
+                        if (result)
+                        {
+                            try
+                            {
+                                decimal data = Convert.ToDecimal(tmp);
+                            }
+                            catch
+                            {
+                                result = false;
+                                errorMessage = "值不是实数类型";
+                            }
+                        }
+                    }
                 }
-                return result;
-              
             }
+            else
+            {
+                result = false;
+            }
+            return result;
+
         }
     }
+
 }

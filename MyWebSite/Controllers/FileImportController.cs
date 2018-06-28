@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using MyWebSit.Core.Helpers;
+using MyWebSite.Application.Servers;
 using MyWebSite.Attributes;
 using MyWebSite.Models;
 using OfficeOpenXml;
@@ -88,12 +89,12 @@ namespace MyWebSite.Controllers
                 string saveExcelFilePath = excelPath; //服务器保存Excel文件的路径
                 string errorMsg = string.Empty;       //验证错误信息
               
-                DataTable dataTable = GetDataTableByExcel(saveExcelFilePath,out errorMsg);
+                DataTable dataTable = ExcelServer.GetDataTableByExcel(saveExcelFilePath,out errorMsg);
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
                     return Json(errorMsg);
                 }
-                //DeleteFile(excelFile);
+                //ExcelServer.DeleteFile(excelPath);
                 return View(excelPath);
             }
             catch (Exception ex)
@@ -102,37 +103,6 @@ namespace MyWebSite.Controllers
             }
         }
 
-        /// <summary>
-        /// 根据导入的Excel文件生成DataTable表
-        /// </summary>
-        /// <param name="excelFile"></param>
-        /// <param name="saveExcelFilePath"></param>
-        /// <param name="errorMsg"></param>
-        /// <returns></returns>
-        public DataTable GetDataTableByExcel(string saveExcelFilePath, out string errorMsg)
-        {
-            
-            errorMsg = string.Empty;
-            string excelIDName = "Import_Excel";
-
-            ImportExcelHelper helper = new ImportExcelHelper(excelIDName, saveExcelFilePath);
-            List<string> msgList = new List<string>();
-            helper.Validate(20, out msgList);
-            DataTable dataTabel = helper.GetDataTable();
-            return dataTabel;
-        }
-
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        /// <param name="path">文件路径</param>
-        private static void DeleteFile(string path)
-        {
-            if(System.IO.File.Exists(path))
-            {
-                System.IO.File.Delete(path);
-            }
-        }
 
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace MyWebSite.Application.Common
+namespace MyWebSite.Core.Common
 {
     public class ExcelValidatorFactory
     {
@@ -56,6 +56,9 @@ namespace MyWebSite.Application.Common
                         length = Convert.ToInt32(colNode.GetAttribute("Length"));
                     int? minValue = string.IsNullOrEmpty(colNode.GetAttribute("MinValue")) ? int.MinValue : Convert.ToInt32(colNode.GetAttribute("MinValue"));
                     int? maxValue = string.IsNullOrEmpty(colNode.GetAttribute("MaxValue")) ? int.MaxValue : Convert.ToInt32(colNode.GetAttribute("MaxValue"));
+                    int decimals = 0;
+                    int.TryParse(colNode.GetAttribute("decimals"), out decimals);
+
                     container.ColsName.Add(Convert.ToInt32(colNo),id);
                     container.ColsDesc.Add(Convert.ToInt32(colNo),desc);
                     container.ColsType.Add(Convert.ToInt32(colNo),type.ToUpper());
@@ -71,23 +74,35 @@ namespace MyWebSite.Application.Common
                             validator = new IntegerValidator(Convert.ToBoolean(necessary), minValue, maxValue);
                             container.FormatValidators.Add(Convert.ToInt32(colNo), validator);
                             break;
+                        case "DATETime":
+                            validator = new DataTimeValidator(Convert.ToBoolean(necessary), regex, regexMessage);
+                            container.FormatValidators.Add(Convert.ToInt32(colNo), validator);
+                            break;
+                        case "DECIMAL":
+                            validator = new DecimalValidator(Convert.ToBoolean(necessary), decimals);
+                            container.FormatValidators.Add(Convert.ToInt32(colNo), validator);
+                            break;
                         default:
                             throw new Exception();
                     }
                 }
 
+                //加载验证方法
                 XmlNodeList extList = excel.GetElementsByTagName("ExtValidator");
                 foreach (XmlElement extNode in extList)
                 {
                     InvokerInfo info = new InvokerInfo();
                     info.Assembly = extNode.GetAttribute("Assembly");
+                    info.ClassName = extNode.GetAttribute("Class");
+                    info.MethodName = extNode.GetAttribute("Method");
 
                     foreach (XmlElement paraNode in extNode.ChildNodes)
                     {
                         info.ParamsColNo.Add(Convert.ToInt32(paraNode.GetAttribute("ValueColNo")));
-                        //info.ParamsType.Add(Convert)
-                        container.ExtValidators.Add(info);
-                    }                  
+                        info.ParamsType.Add(paraNode.GetAttribute("Type"));
+                        
+                    }        
+                    container.ExtValidators.Add(info);
                 }
                 return container;
             }

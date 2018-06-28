@@ -1,4 +1,4 @@
-﻿using MyWebSite.Application.Common;
+﻿using MyWebSite.Core.Common;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -20,8 +20,7 @@ namespace MyWebSit.Core.Helpers
         Hashtable typeHashtable = new Hashtable();
         Hashtable methodHashtable = new Hashtable();
         public ImportExcelHelper(string excelID, string importFileName)
-        {
-            importFileName = @"C:\Users\lqit-tcyunwei\source\repos\MyWebSite\MyWebSite\UpLoadFiles\e542d7ca-5bf7-47b0-811b-f1348ce07a8b.xlsx";
+        {            
             FileStream file = new FileStream(importFileName, FileMode.Open, FileAccess.Read);
             string fileType = importFileName.Substring(importFileName.LastIndexOf("."));
             if (fileType == ".xls")
@@ -118,7 +117,7 @@ namespace MyWebSit.Core.Helpers
                         if (!validator.Validate(st.GetRow(i).GetCell(v.Key)))
                         {
                             result = false;
-                            errMsgList.Add($"第{i}行/第{v.Key}列格式验证不通过，原因：{validator.Errormessage}");
+                            errMsgList.Add($"第{i}行/第{v.Key}列格式验证不通过，原因：{validator.ErrorMessage}");
                             if (errMsgList.Count >= allowErrorNum)
                                 return result;
                         }

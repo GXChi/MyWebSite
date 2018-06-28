@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyWebSite.Application.Common
+namespace MyWebSite.Core.Common
 {
     public class ExcelValidatorContainer
     {

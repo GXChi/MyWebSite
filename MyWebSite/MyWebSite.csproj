@@ -54,4 +54,8 @@
     <ProjectReference Include="..\MyWebSite.Domain\MyWebSite.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UpLoadFiles\" />
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 
-namespace MyWebSite.Application.Common
+namespace MyWebSite.Core.Common
 {
     public class FastInvoke
     {

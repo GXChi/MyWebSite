@@ -27,8 +27,7 @@ namespace MyWebSite.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
-        {
-            //var model = _userAppService.GetAll();
+        {            
             return View();
         }
 
