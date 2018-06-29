@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyWebSit.Core.Repositories
 {
-    class ArticleRepository : RepositoryBase<Article>,IArticleReposirtory
+    public class ArticleRepository : RepositoryBase<Article>,IArticleRepository
     {     
         public ArticleRepository(MyWebSiteDbContext dbContext) : base(dbContext)
         {

@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyWebSit.Core;
 using MyWebSit.Core.Repositories;
+using MyWebSite.Application;
+using MyWebSite.Application.ArticleApp;
 using MyWebSite.Application.UserApp;
 using MyWebSite.Domain.IRepositories;
 
@@ -19,6 +21,7 @@ namespace MyWebSite
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            MyMapper.Initialize();
         }
 
         public IConfiguration Configuration { get; }
@@ -32,6 +35,8 @@ namespace MyWebSite
                optios.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IArticleRepository,ArticleRepository>();
+            services.AddScoped<IArticleAppService, ArticleAppService>();
 
         }
 

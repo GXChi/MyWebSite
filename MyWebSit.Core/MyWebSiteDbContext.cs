@@ -23,6 +23,8 @@ namespace MyWebSit.Core
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<Article> Articles { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder builder)

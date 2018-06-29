@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyWebSite.Domain.IRepositories
 {
-    public interface IArticleReposirtory : IRepository<Article>
+    public interface IArticleRepository : IRepository<Article>
     {
         
     }

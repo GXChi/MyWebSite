@@ -19,6 +19,15 @@ namespace MyWebSit.Core
                 {
                     return;   // 已经初始化过数据，直接返回
                 }
+                
+                context.Articles.Add(
+                    new Article
+                    {
+                        Title = "头条",
+                        Content = "地方骄傲老规矩多晶硅垃圾多来几个了多久；djg阿圭罗 鹿鼎记",
+                        Url = "dddd"
+                    }
+                );
                 Guid departmentId = Guid.NewGuid();
                 //增加一个部门
                 context.Departments.Add(
@@ -74,6 +83,7 @@ namespace MyWebSit.Core
                        Icon = "fa fa-link"
                    }
                 );
+
                 context.SaveChanges();
             }
         }

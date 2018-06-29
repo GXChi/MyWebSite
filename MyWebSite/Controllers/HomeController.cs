@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyWebSit.Core.Helpers;
+using MyWebSite.Application.ArticleApp;
 using MyWebSite.Application.UserApp;
 using MyWebSite.Application.UserApp.Dto;
 using MyWebSite.Models;
@@ -18,17 +19,21 @@ namespace MyWebSite.Controllers
     public class HomeController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
+        
 
         private readonly IUserAppService _userAppService;
+        private IArticleAppService _articleAppService;
 
-        public HomeController(IUserAppService userAppService, IHostingEnvironment hostingEnvironment)
+        public HomeController(IUserAppService userAppService, IHostingEnvironment hostingEnvironment, IArticleAppService articleAppService)
         {
             _userAppService = userAppService;
+            _articleAppService = articleAppService;
             _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
-        {            
-            return View();
+        {
+            var model = _articleAppService.GetAll();
+            return View(model);
         }
 
         public IActionResult Create(UserDto user)

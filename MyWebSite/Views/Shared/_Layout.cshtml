@@ -8,6 +8,14 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+
+        @*模板*@
+        <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="~/css/flexslider.css" rel="stylesheet" />
+        <link href="~/css/skdslider.css" rel="stylesheet" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,39 +25,299 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MyWebSite</a>
+    @*<nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MyWebSite</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-area="" asp-controller="FileImport" asp-action="Index">excel导入</a></li>
+                        <li><a asp-area="" asp-controller="Login" asp-action="Index">登录</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Import">excel</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="FileImport" asp-action="Index">excel导入</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Index">登录</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Import">excel</a></li>
-                </ul>
+        </nav>*@
+    <!--header-->
+    <header>
+        <div class="w3layouts-top-strip">
+            <div class="container">
+                <div class="logo">
+                    <h1><a href="#">大池</a></h1>
+                    <p>天不生我李淳罡 剑道万古长如夜</p>
+                </div>
+                @*<div class="w3ls-social-icons">
+                        <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                        <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                        <a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-google-plus"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-rss"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-behance"></i></a>
+                    </div>*@
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - MyWebSite</p>
-        </footer>
-    </div>
+        <!-- navigation -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
 
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a class="active" href="index.html">首页</a></li>
+                        <li><a href="features.html">文章</a></li>
+                        <li><a href="lifestyle.html">生活日常</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">专题<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="icons.html">Icons Page</a></li>
+                                <li><a href="typo.html">Typography</a></li>
+
+                            </ul>
+                        </li>
+                        <li><a href="photography.html">照片</a></li>
+                        <li><a href="about.html">关于</a></li>
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                <div class="w3_agile_login">
+                    <div class="cd-main-header">
+                        <a class="cd-search-trigger" href="#cd-search"> <span></span></a>
+                        <!-- cd-header-buttons -->
+                    </div>
+                    <div id="cd-search" class="cd-search">
+                        <form action="#" method="post">
+                            <input name="Search" type="search" placeholder="Search...">
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <!-- //navigation -->
+    </header>
+    <!--header-->
+    <!--body-->
+
+    <div class="container">
+        <div class="banner-btm-agile">
+            <!-- //btm-wthree-left -->
+            @RenderBody()
+            <!-- //btm-wthree-left -->
+            <!-- btm-wthree-right -->
+            <div class="col-md-3 w3agile_blog_left">
+                <div class="wthreesearch">
+                    <form action="#" method="post">
+                        <input type="search" name="Search" placeholder="搜索" required="">
+                        <button type="submit" class="btn btn-default search" aria-label="Left Align">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </form>
+
+                </div>
+
+                <div class="agileinfo_calender">
+                    <h3>其他网站</h3>
+                    <div class="w3ls-social-icons-1">
+                        <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                        <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                        <a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-google-plus"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-rss"></i></a>
+                        <a class="linkedin" href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div>
+                <div class="w3ls_popular_posts">
+                    <h3>热门帖子</h3>
+                    <div class="agileits_popular_posts_grid">
+                        <div class="w3agile_special_deals_grid_left_grid">
+                            <a href="singlepage.html"><img src="images/p1.jpg" class="img-responsive" alt="" /></a>
+                        </div>
+                        <h4><a href="singlepage.html">Tellus Faucibus Eleifend Sit Amet</a></h4>
+                        <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                    </div>
+                    <div class="agileits_popular_posts_grid">
+                        <div class="w3agile_special_deals_grid_left_grid">
+                            <a href="singlepage.html"><img src="images/p2.jpg" class="img-responsive" alt="" /></a>
+                        </div>
+                        <h4><a href="singlepage.html">Mauris Ut Odio Sed Nisi Convallis</a></h4>
+                        <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                    </div>
+                    <div class="agileits_popular_posts_grid">
+                        <div class="w3agile_special_deals_grid_left_grid">
+                            <a href="singlepage.html"><img src="images/p3.jpg" class="img-responsive" alt="" /></a>
+                        </div>
+                        <h4><a href="singlepage.html">Curabitur A Sapien Et Tellus Faucibus</a></h4>
+                        <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                    </div>
+                </div>
+
+                <div class="w3l_categories">
+                    <h3>分类</h3>
+                    <ul>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>tellus faucibus eleifend sit amet</a></li>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Mauris ut odio sed nisi convallis</a></li>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Curabitur a sapien et tellus faucibus</a></li>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>porta nunc eget, lobortis nulla</a></li>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Sed ut metus turpis cursus convallis</a></li>
+                        <li><a href="singlepage.html"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Maecenas cursus at ex a faucibus</a></li>
+                    </ul>
+                </div>
+                <div class="w3ls_recent_posts">
+                    <h3>最近帖子</h3>
+                    <div class="agileits_recent_posts_grid">
+                        <div class="agileits_recent_posts_gridl">
+                            <div class="w3agile_special_deals_grid_left_grid">
+                                <a href="singlepage.html"><img src="images/r1.jpg" class="img-responsive" alt="" /></a>
+                            </div>
+                        </div>
+                        <div class="agileits_recent_posts_gridr">
+                            <h4><a href="singlepage.html">velit esse quam nihil</a></h4>
+                            <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="agileits_recent_posts_grid">
+                        <div class="agileits_recent_posts_gridl">
+                            <div class="w3agile_special_deals_grid_left_grid">
+                                <a href="singlepage.html"><img src="images/r2.jpg" class="img-responsive" alt="" /></a>
+                            </div>
+                        </div>
+                        <div class="agileits_recent_posts_gridr">
+                            <h4><a href="singlepage.html">Class aptent taciti </a></h4>
+                            <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="agileits_recent_posts_grid">
+                        <div class="agileits_recent_posts_gridl">
+                            <div class="w3agile_special_deals_grid_left_grid">
+                                <a href="singlepage.html"><img src="images/r3.jpg" class="img-responsive" alt="" /></a>
+                            </div>
+                        </div>
+                        <div class="agileits_recent_posts_gridr">
+                            <h4><a href="singlepage.html">Maecenas eget erat </a></h4>
+                            <h5><i class="fa fa-calendar" aria-hidden="true"></i>FEB 15,2017</h5>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+                <div class="w3l_tags">
+                    <h3>标签</h3>
+                    <ul class="tag">
+                        <li><a href="singlepage.html">时尚</a></li>
+                        <li><a href="singlepage.html">摄影</a></li>
+                        <li><a href="singlepage.html">艺术家</a></li>
+                        <li><a href="singlepage.html">音乐</a></li>
+                        <li><a href="singlepage.html">店</a></li>
+                        <li><a href="singlepage.html">企业</a></li>
+                        <li><a href="singlepage.html">个人</a></li>
+                        <li><a href="singlepage.html">餐厅</a></li>
+                        <li><a href="singlepage.html">商业</a></li>
+                        <li><a href="singlepage.html">剑来</a></li>
+                        <li><a href="singlepage.html">动画</a></li>
+                        <li><a href="singlepage.html">海贼王</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- //btm-wthree-right -->
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--body-->
+    <!--footer-->
+    <div class="footer-agile-info">
+        <div class="container">
+            <div class="col-md-4 w3layouts-footer">
+                <h3>联系信息</h3>
+                <p><span><i class="fa fa-map-marker" aria-hidden="true"></i></span>柳州市鱼峰区38号</p>
+                <p><span><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="#">E: baidu.com</a> </p>
+                <p><span><i class="fa fa-mobile" aria-hidden="true"></i></span>P: +254 2564584 / +542 8245658 </p>
+                <p><span><i class="fa fa-globe" aria-hidden="true"></i></span><a href="#">W: www.w3layouts.com</a></p>
+            </div>
+            <div class="col-md-4 wthree-footer">
+                <h3>雪中悍刀行</h3>
+                <p>智者尽其谋，勇者竭其力，仁者播其惠，信者效其忠 。文武争驰，君臣相安无事，自可垂拱而治。 ----烽火戏诸侯</p>
+
+            </div>
+            <div class="col-md-4 w3-agile">
+                <h2>剑来</h2>
+                <p>小镇虽小，粗粮可以养胃，书籍可以养气，景致可以养心。——烽火戏诸侯</p>
+                <form action="#" method="post">
+                    <input type="email" name="Email" placeholder="输入你的电子邮件" required="">
+                    <input type="submit" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--footer-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            /*
+                var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear'
+                };
+            */
+
+            $().UItoTop({ easingType: 'easeOutQuart' });
+
+        });
+    </script>
+    <!--copyright-->
+    <div class="copyright">
+        <div class="container">
+            <div class="w3agile-list">
+                <ul>
+                    <li><a href="index.html">主页</a></li>
+                    <li><a href="about.html">文章</a></li>
+                    <li><a href="lifestyle.html">生活日常</a></li>
+                    <li><a href="photography.html">Photography</a></li>
+                    <li><a href="fashion.html">时尚</a></li>
+                    <li><a href="icons.html">代码</a></li>
+                    <li><a href="features.html">照片</a></li>
+                    <li><a href="contact.html">关于</a></li>
+                </ul>
+            </div>
+            <div class="agileinfo">
+                <p>© 2018 - 郭大池 Fashion Blog . All Rights Reserved . Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+    <!--copyright-->
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @*模板*@
+        <script src="~/js/main.js"></script>
+        <script src="~/js/skdslider.min.js"></script>
+
+        <script src="~/js/move-top.js"></script>
+        <script src="~/js/easing.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -67,7 +335,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-   
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

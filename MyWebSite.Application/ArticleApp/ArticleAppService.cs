@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace MyWebSite.Application.ArticleApp
 {
     public class ArticleAppService : IArticleAppService
     {
-        private readonly IArticleReposirtory _articleRepository;
-        public ArticleAppService(IArticleReposirtory articleRepository)
+        private readonly IArticleRepository _articleRepository;
+        public ArticleAppService(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
         }
@@ -24,19 +25,19 @@ namespace MyWebSite.Application.ArticleApp
            return Mapper.Map<ArticleDto>(article);
         }
 
-        public List<Article> GetAll()
+        public List<ArticleDto> GetAll()
         {
-            return _articleRepository.GetAll();
+            return Mapper.Map<List<ArticleDto>>(_articleRepository.GetAll());
         }
 
-        public Article Get(Guid id)
+        public ArticleDto Get(Guid id)
         {
-            return _articleRepository.Get(id);
+            return Mapper.Map<ArticleDto>(_articleRepository.Get(id));
         }
 
-        public List<Article> GetAllList(Expression<Func<Article,bool>> where)
+        public List<ArticleDto> GetAllList()
         {
-            return _articleRepository.GetAllList(where);
+            return Mapper.Map<List<ArticleDto>>(_articleRepository.GetAllList(it=>it.Id!=Guid.Empty).OrderBy(it => it.Content));
         }
 
         public void Delete(Guid id)
@@ -44,10 +45,10 @@ namespace MyWebSite.Application.ArticleApp
             _articleRepository.Delete(id);
         }
 
-        public Article Update(Article article)
+        public ArticleDto Update(Article article)
         {
-            return _articleRepository.Update(article);
+            return Mapper.Map<ArticleDto>(_articleRepository.Update(article));
         }
-        
+      
     }
 }
