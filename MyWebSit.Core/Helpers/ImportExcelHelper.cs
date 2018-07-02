@@ -1,4 +1,5 @@
-﻿using MyWebSite.Core.Common;
+﻿using Microsoft.AspNetCore.Hosting;
+using MyWebSite.Core.Common;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -14,61 +15,66 @@ namespace MyWebSit.Core.Helpers
 {
     public class ImportExcelHelper
     {
+       
         string dataSheetName = "Sheet1";
         IWorkbook workbook;
         ExcelValidatorContainer container;
         Hashtable typeHashtable = new Hashtable();
         Hashtable methodHashtable = new Hashtable();
+  
         public ImportExcelHelper(string excelID, string importFileName)
-        {            
-            FileStream file = new FileStream(importFileName, FileMode.Open, FileAccess.Read);
+        {
+           
+            FileStream file = new FileStream(importFileName, FileMode.Open, FileAccess.Read); 
+            
             string fileType = importFileName.Substring(importFileName.LastIndexOf("."));
-            if (fileType == ".xls")
-            {
-                workbook = new HSSFWorkbook(file);
-            }
-            else if (fileType == ".xlsx")
-            {
-                workbook = new XSSFWorkbook(file);
-            }
-            container = ExcelValidatorFactory.GetValidator(excelID);  
+            //if (fileType == ".xls")
+            //{
+            //    workbook = new HSSFWorkbook(file);                                                                                         
+            //}
+            //else if (fileType == ".xlsx")
+            //{
+            //    workbook = new XSSFWorkbook(file);
+            //}
+            container = ExcelValidatorFactory.GetValidator(excelID);
+           
         }
 
         public Boolean Validate(int allowErrorNum, out List<string> errMsgList)
         {
             Boolean result = true;
             errMsgList = new List<string>();
-
             //创建扩展验证器
-            foreach (InvokerInfo info in container.ExtValidators)
-            {
-                try
-                {
-                    Assembly ass = Assembly.Load(info.Assembly);
-                    Type t = ass.GetType(info.ClassName, true);
-                    typeHashtable.Add(info.ClassName, Activator.CreateInstance(t));
 
-                    List<Type> typeList = new List<Type>();
-                    for (int i = 0; i < info.ParamsType.Count; i++)
-                    {
-                        switch (info.ParamsType[i].ToUpper())
-                        {
-                            case "STRING":
-                                typeList.Add(typeof(string));
-                                break;
-                            default:
-                                throw new Exception();
-                        }
-                    }
-                    MethodInfo methodInfo = t.GetMethod(info.MethodName, typeList.ToArray());
-                    methodHashtable.Add(info.MethodName, methodInfo);
-                }
-                catch(Exception ex)
-                {
-                    result = false;
-                    throw ex;
-                }
-            }
+            //foreach (InvokerInfo info in container.ExtValidators)
+            //{
+            //    try
+            //    {
+            //        Assembly ass = Assembly.Load(info.Assembly);
+            //        Type t = ass.GetType(info.ClassName, true);
+            //        typeHashtable.Add(info.ClassName, Activator.CreateInstance(t));
+
+            //        List<Type> typeList = new List<Type>();
+            //        for (int i = 0; i < info.ParamsType.Count; i++)
+            //        {
+            //            switch (info.ParamsType[i].ToUpper())
+            //            {
+            //                case "STRING":
+            //                    typeList.Add(typeof(string));
+            //                    break;
+            //                default:
+            //                    throw new Exception();
+            //            }
+            //        }
+            //        MethodInfo methodInfo = t.GetMethod(info.MethodName, typeList.ToArray());
+            //        methodHashtable.Add(info.MethodName, methodInfo);
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        result = false;
+            //        throw ex;
+            //    }
+            //}
 
             //验证工作表是否存在
             ISheet st = null;
@@ -81,11 +87,12 @@ namespace MyWebSit.Core.Helpers
                 return result;
             }
 
-            //验证工作表是否存在
+           
             IEnumerator it = st.GetRowEnumerator();
-
+            //验证表头是否正确
             try
             {
+                // 判断是否添加动态列方法
                 if (container.DynamicTable)
                     AddDynamicCols(st);
 

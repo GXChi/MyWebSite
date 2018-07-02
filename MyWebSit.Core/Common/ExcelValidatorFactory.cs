@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -7,7 +9,7 @@ namespace MyWebSite.Core.Common
 {
     public class ExcelValidatorFactory
     {
-        private string configPath = AppDomain.CurrentDomain.BaseDirectory;
+        private string configPath = Directory.GetCurrentDirectory();       
         private string configXMLFile = "ExcelValidatorCfg.xml";
         private static ExcelValidatorFactory instance = null;
         private static XmlDocument xmlDoc = new XmlDocument();
@@ -16,14 +18,14 @@ namespace MyWebSite.Core.Common
         {
             try
             {
-                xmlDoc.Load(configPath + configXMLFile);
-            } 
+                xmlDoc.Load(configPath + "\\"+ configXMLFile);
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-
+   
         public ExcelValidatorContainer CreateValidator(string excelID)
         {
             try
@@ -58,7 +60,7 @@ namespace MyWebSite.Core.Common
                     int? maxValue = string.IsNullOrEmpty(colNode.GetAttribute("MaxValue")) ? int.MaxValue : Convert.ToInt32(colNode.GetAttribute("MaxValue"));
                     int decimals = 0;
                     int.TryParse(colNode.GetAttribute("decimals"), out decimals);
-
+                  
                     container.ColsName.Add(Convert.ToInt32(colNo),id);
                     container.ColsDesc.Add(Convert.ToInt32(colNo),desc);
                     container.ColsType.Add(Convert.ToInt32(colNo),type.ToUpper());
@@ -88,7 +90,8 @@ namespace MyWebSite.Core.Common
                 }
 
                 //加载验证方法
-                XmlNodeList extList = excel.GetElementsByTagName("ExtValidator");
+                XmlNodeList extList = xmlDoc.GetElementsByTagName("ExtValidator");
+               
                 foreach (XmlElement extNode in extList)
                 {
                     InvokerInfo info = new InvokerInfo();

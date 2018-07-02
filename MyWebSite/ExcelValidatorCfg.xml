@@ -5,4 +5,9 @@
     <Col ID="性别" ColNo="1" Desc="性别" Type="String" Necessary="True" Length="1"/>
     <Col ID="电话" ColNo="2" Desc="电话" Type="Int" Necessary="False" Length="20"/>
   </Excel>
+
+  <!-- 检查公告类型是否正确，不存在则报错不能重复导入 -->
+    <ExtValidator Assembly="Portal.BLL" Class="Portal.BLL.CheckOAContent" Method="fCheckOAContentTypeExists">
+      <Param index="0" Type="String" ValueColNo="1"/>  
+    </ExtValidator>
 </Root>
