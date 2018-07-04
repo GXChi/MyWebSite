@@ -15,13 +15,20 @@ namespace MyWebSite.Controllers
         public ArticleController(IArticleAppService articleAppService)
         {
             _articleAppSerivce = articleAppService;
-        }
+        }       
         public IActionResult Index()
         {
             var articles = _articleAppSerivce.GetAll();
             return View(articles);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();   
+        }
+
+        [HttpPost]
         public IActionResult Create(ArticleDto article)
         {
             _articleAppSerivce.Insert(article);

@@ -3,5 +3,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+@model List<ArticleDto>
 
+
+<table>
+    <tr>
+        <th>标题</th>
+        <th>内容</th>
+        <th>url</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>
+                @item.Title
+            </th>
+            <th>
+                @item.Content
+            </th>
+            <th>
+                @item.Url
+            </th>
+        </tr>
+    }
+
+</table>
+<div>
+    <a asp-action="Create">新增文章</a>   
+</div>
