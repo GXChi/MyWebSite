@@ -6,24 +6,31 @@
 @model List<ArticleDto>
 
 
-<table>
+<table id="table-7">   
     <tr>
         <th>标题</th>
         <th>内容</th>
         <th>url</th>
+        <th>操作</th>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
-            <th>
+            <td>
                 @item.Title
-            </th>
-            <th>
+            </td>
+            <td>
                 @item.Content
-            </th>
-            <th>
+            </td>
+            <td>
                 @item.Url
-            </th>
+            </td>
+            <td>
+               <button onclick="DeleteArticle(item.id)">
+                   <i class="glyphicon glyphicon-remove"></i>
+               </button>
+            </td>
+           
         </tr>
     }
 
@@ -31,3 +38,45 @@
 <div>
     <a asp-action="Create">新增文章</a>   
 </div>
+<script>
+    function DeleteArticle(id) {
+        
+        $.ajax({
+            type: "POST",
+            url: "/Delete/Article",
+            data: id,
+            success: function () { 
+                alrte("删除成功")
+            }
+        });                      
+    };
+</script>
+<style>
+    /* Table Head */
+    #table-7 th {
+        background-color: rgb(81, 130, 187);
+        color: #fff;
+        border-bottom-width: 0;
+    }
+
+    /* Column Style */
+    #table-7 td {
+        color: #000;
+    }
+    /* Heading and Column Style */
+    #table-7 tr, #table-7 th, #table-7 td {
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(81, 130, 187);
+    }
+
+    /* Padding and font style */
+     #table-7 td, #table-7 th {
+        padding: 5px 10px;
+        font-size: 15px;
+        font-family: Verdana;
+        font-weight: bold;
+    }
+   
+
+</style>

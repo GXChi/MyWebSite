@@ -3,10 +3,24 @@
     ViewData["Title"] = "Create";
 }
 
-<form action="Create" method="post">
-    <input type="text" placeholder="请输入标题" />
-    <textarea placeholder="输入内容"></textarea>
-    <input type="text" placeholder="请输入url" />
-    <input type="submit" value="确认"/>
-</form>
-
+<div class="container">
+    <form action="Create" method="post">
+        <div class="aticle-create">
+            <input type="text" placeholder="请输入标题" name="title" />
+        </div>
+        <div class="aticle-create">
+            <textarea placeholder="输入内容" name="content"></textarea>
+        </div>
+        <div class="aticle-create">
+            <input type="text" placeholder="请输入url" name="url" />
+        </div>
+        <div class="aticle-create">
+            <input type="submit" value="确认" />
+        </div>
+    </form>
+</div>
+<style>
+    .aticle-create {
+        margin: 10px;
+    }
+</style>
