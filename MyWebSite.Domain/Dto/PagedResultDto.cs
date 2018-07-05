@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyWebSite.Domain.Dto
 {
-    class PagedResultDto<T>
+    class PagedResultDto<T> 
     {
         public IList<T> Items { get; set; }
         public object DynamicItems { get; set; }

@@ -13,7 +13,7 @@ namespace MyWebSite.Application.ArticleApp
 
         List<ArticleDto> GetAll();
 
-        List<ArticleDto> GetAllList();
+        List<ArticleDto> GetAllList(Expression<Func<Article, bool>> where);
 
         ArticleDto Get(Guid id);
 
@@ -21,6 +21,8 @@ namespace MyWebSite.Application.ArticleApp
 
         ArticleDto Update(Article article);
 
+        List<ArticleDto> GetPage(int startPage, int pageSize, out int rowCount, Expression<Func<Article, bool>> where, Expression<Func<Article, object>> order);
+       
 
     }
 }

@@ -4,51 +4,59 @@
 }
 
 @model List<ArticleDto>
-
-
-<table id="table-7">   
-    <tr>
-        <th>标题</th>
-        <th>内容</th>
-        <th>url</th>
-        <th>操作</th>
-    </tr>
-    @foreach (var item in Model)
-    {
+<form asp-action="Index" method="post">
+    <input type="text" name="searchString" />
+    <input type="submit" value="搜索" id="search" />
+    <table id="table-7">
         <tr>
-            <td>
-                @item.Title
-            </td>
-            <td>
-                @item.Content
-            </td>
-            <td>
-                @item.Url
-            </td>
-            <td>
-               <a class="glyphicon glyphicon-remove-sign" asp-action="Delete" asp-route-id="@item.id"></a>
-               <a class="glyphicon glyphicon-chevron-down" asp-action="Detail" asp-route-id="@item.id"></a>
-            </td>
-           
+            <th>标题</th>
+            <th>内容</th>
+            <th>url</th>
+            <th>操作</th>
         </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Content
+                </td>
+                <td>
+                    @item.Url
+                </td>
+                <td>
+                    <a class="glyphicon glyphicon-remove-sign" asp-action="Delete" asp-route-id="@item.Id"></a>
+                    <a class="glyphicon glyphicon-chevron-down" asp-action="Detail" asp-route-id="@item.Id"></a>
+                </td>
 
-</table>
+            </tr>
+        }
+
+    </table>
+</form>
 <div>
     <a asp-action="Create">新增文章</a>   
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-    function DeleteArticle(id) {
-        
-        $.ajax({
-            type: "POST",
-            url: "/Delete/Article",
-            data: id,
-            success: function () { 
-                alrte("删除成功")
-            }
-        });                      
-    };
+    $(function () {   
+        $("#search").click(function () {
+            var values = $("[name='searchString']").val();          
+            $.ajax({
+                type: "GET",
+                url: "/Article/Index",
+                data: { searchString: values },
+                success: function () { 
+
+                }
+            });
+
+        });
+
+    });
+    
 </script>
 <style>
     /* Table Head */

@@ -40,7 +40,7 @@ namespace MyWebSit.Core.Repositories
         {
             return _dbContext.Set<TEntity>().ToList();
         }
-
+    
         /// <summary>
         /// 根据主键id获取实体合计
         /// </summary>
@@ -59,8 +59,8 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
-        }
+            return _dbContext.Set<TEntity>().Where(predicate).ToList();
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
         /// <summary>
         /// 更具lambda获取单个实体
@@ -70,8 +70,6 @@ namespace MyWebSit.Core.Repositories
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().FirstOrDefault(predicate);
-
-
         }
 
         /// <summary>
