@@ -26,9 +26,8 @@
                 @item.Url
             </td>
             <td>
-               <button onclick="DeleteArticle(item.id)">
-                   <i class="glyphicon glyphicon-remove"></i>
-               </button>
+               <a class="glyphicon glyphicon-remove-sign" asp-action="Delete" asp-route-id="@item.id"></a>
+               <a class="glyphicon glyphicon-chevron-down" asp-action="Detail" asp-route-id="@item.id"></a>
             </td>
            
         </tr>

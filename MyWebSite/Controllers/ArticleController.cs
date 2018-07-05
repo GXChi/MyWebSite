@@ -34,5 +34,18 @@ namespace MyWebSite.Controllers
             _articleAppSerivce.Insert(article);
             return View();
         }
+
+        public IActionResult Delete(Guid id)
+        {
+            _articleAppSerivce.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Detail(Guid id)
+        {
+            var article = _articleAppSerivce.Get(id);
+            return View(article);
+        }
     }
 }
