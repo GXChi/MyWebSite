@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MyWebSite.Application.ArticleApp.Dtos;
-using MyWebSite.Application.UserApp.Dto;
+using MyWebSite.Application.UserApp.Dtos;
 using MyWebSite.Domain.Entities;
 using System;
 using System.Collections.Generic;

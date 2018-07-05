@@ -5,7 +5,7 @@ using MyWebSite.Domain.Entities;
 
 namespace MyWebSite.Domain.Entities
 {
-    public class User : Entity
+    public class User : Entity 
     {
         /// <summary>
         /// 用户名

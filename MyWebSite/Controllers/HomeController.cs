@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyWebSit.Core.Helpers;
 using MyWebSite.Application.ArticleApp;
 using MyWebSite.Application.UserApp;
-using MyWebSite.Application.UserApp.Dto;
+using MyWebSite.Application.UserApp.Dtos;
 using MyWebSite.Models;
 
 namespace MyWebSite.Controllers

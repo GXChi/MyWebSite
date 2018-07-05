@@ -19,15 +19,41 @@ namespace MyWebSit.Core
                 {
                     return;   // 已经初始化过数据，直接返回
                 }
-                
-                context.Articles.Add(
+
+                context.Articles.AddRange(
                     new Article
                     {
                         Title = "头条",
-                        Content = "地方骄傲老规矩多晶硅垃圾多来几个了多久；djg阿圭罗 鹿鼎记",
+                        Content = "地方骄傲老规矩多",
                         Url = "dddd"
-                    }
+                    },
+                    new Article
+                    {
+                        Title = "头条",
+                        Content = "地方骄傲老规矩",
+                        Url = "dddd"
+                    },
+                     new Article
+                     {
+                         Title = "头条",
+                         Content = "地方骄傲老规矩多",
+                         Url = "dddd"
+                     },
+                      new Article
+                      {
+                          Title = "头条",
+                          Content = "地方骄",
+                          Url = "dddd"
+                      },
+                      new Article
+                      {
+                          Title = "头条",
+                          Content = "地方骄傲老",
+                          Url = "dddd"
+                      }
                 );
+
+                
                 Guid departmentId = Guid.NewGuid();
                 //增加一个部门
                 context.Departments.Add(
@@ -39,14 +65,56 @@ namespace MyWebSit.Core
                    }
                 );
                 //增加一个超级管理员用户
-                context.Users.Add(
+                context.Users.AddRange(
                      new User
                      {
                          UserName = "admin",
                          PassWrod = "123456", //暂不进行加密
                          Name = "超级管理员",
                          DepartmentId = departmentId
-                     }
+                     },
+                     new User
+                     {
+                         UserName = "admin1",
+                         PassWrod = "123456", //暂不进行加密
+                         Name = "超级管理员1",
+                         DepartmentId = departmentId
+                     },
+                      new User
+                      {
+                          UserName = "admin2",
+                          PassWrod = "123456", //暂不进行加密
+                          Name = "超级管理员2",
+                          DepartmentId = departmentId
+                      },
+                      new User
+                      {
+                          UserName = "admin3",
+                          PassWrod = "123456", //暂不进行加密
+                          Name = "超级管理员3",
+                          DepartmentId = departmentId
+                      },
+                       new User
+                       {
+                           UserName = "wangwu",
+                           PassWrod = "123456", //暂不进行加密
+                           Name = "王五",
+                           DepartmentId = departmentId
+                       },
+                        new User
+                        {
+                            UserName = "lisi",
+                            PassWrod = "123456", //暂不进行加密
+                            Name = "李四",
+                            DepartmentId = departmentId
+                        },
+                        new User
+                        {
+                            UserName = "zhangsang",
+                            PassWrod = "123456", //暂不进行加密
+                            Name = "张三",
+                            DepartmentId = departmentId
+                        }
                 );
                 //增加四个基本功能菜单
                 context.Menus.AddRange(

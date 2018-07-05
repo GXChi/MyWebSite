@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using MyWebSite.Application.UserApp.Dto;
+using MyWebSite.Application.UserApp.Dtos;
 using MyWebSite.Domain.Entities;
 using MyWebSite.Domain.IRepositories;
 
@@ -22,9 +22,9 @@ namespace MyWebSite.Application.UserApp
             
         }
 
-        public List<User> GetAll()
+        public List<UserDto> GetAll()
         {
-            return _userRepository.GetAll();
+            return Mapper.Map<List<UserDto>>(_userRepository.GetAll());
         }
 
         public UserDto Insert(UserDto dto)

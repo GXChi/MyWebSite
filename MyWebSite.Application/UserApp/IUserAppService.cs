@@ -1,4 +1,4 @@
-﻿using MyWebSite.Application.UserApp.Dto;
+﻿using MyWebSite.Application.UserApp.Dtos;
 using MyWebSite.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace MyWebSite.Application.UserApp
 
         UserDto Insert(UserDto dto);
 
-        List<User> GetAll();
+        List<UserDto> GetAll();
 
         
     }

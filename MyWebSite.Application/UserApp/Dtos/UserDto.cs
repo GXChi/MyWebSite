@@ -1,11 +1,12 @@
-﻿using MyWebSite.Domain.Entities;
+﻿using MyWebSite.Domain;
+using MyWebSite.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyWebSite.Application.UserApp.Dto
+namespace MyWebSite.Application.UserApp.Dtos
 {
-    public class UserDto
+    public class UserDto : Entity
     {        
         public string UserName { get; set; }
 

@@ -58,4 +58,10 @@
     <Folder Include="UpLoadFiles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\User\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>
