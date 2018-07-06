@@ -3,11 +3,16 @@
     ViewData["Title"] = "Index";
 }
 @using MyWebSite.Domain.Entities;
-@model IEnumerable<User>
+@using MyWebSite.Application.Dto;
+@model PaginatedList<User>
 
 <form asp-action="Index">
-    <input type="text" name="searchString" />
-    <input type="submit" value="搜索" id="search" />
+    <div class="from-actions no-color">
+        <input type="text" name="searchString" />
+        <input type="submit" value="搜索" id="search" />
+        <a asp-action="Index">Back To Full List</a>
+
+    </div>
 </form>
 <table class="table">
     <thead>
@@ -47,6 +52,31 @@
     </tbody>
 </table>
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNexPage ? "disabled" : "";
+}
+<div>
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-Page="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-Page="@(Model.PageIndex + 1) "
+       asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @nextDisabled">
+        Next
+    </a>
+
+    <select class="btn btn-default" id="pageSize">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+    </select>
+</div>
+
+
+
 <div>
     <a asp-action="Create">新增</a>
 </div>
@@ -56,14 +86,29 @@
         $("#search").click(function () {
             var searchString = $("[name='searchString']").val();
             $.ajax({
-                type: "GET",
+                type: "get",
                 url: "/User/Index",
-                data: {searchString : searchString}
-            })
+                data: { searchString: searchString }
+            });
 
+        });
+
+        $("#pageSize").change(function () {
+            $.ajax({
+                type: "post",
+                url: "/User/Index/pageSize=",
+                data: { pageSize: $(this).val() },
+                success: function () {
+                    //location.reload();
+
+                }
+
+            })
+            //$.post("/User/Index", {pageSize:$(this).val()})
+            //alert($(this).val());
         })
     });
 
 
-    
+
 </script>

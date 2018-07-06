@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyWebSit.Core;
+using MyWebSite.Application.Dto;
 using MyWebSite.Application.UserApp;
+using MyWebSite.Application.UserApp.Dtos;
+using MyWebSite.Domain.Entities;
 
 namespace MyWebSite.Controllers
 {
@@ -19,10 +22,22 @@ namespace MyWebSite.Controllers
             _userAppService = userAppService;
             _dbContext = dbContext;
         }
-        public async Task<IActionResult> Index(string sortOrder,string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? page, int pageSize = 5)
         {
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc": "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "data_desc" : "Date";
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "user" ? "user_desc" : "user";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
 
             var users = from u in _dbContext.Users
                         select u;
@@ -34,17 +49,20 @@ namespace MyWebSite.Controllers
             switch (sortOrder)
             {
                 case "name_desc":
+                    users = users.OrderByDescending(s => s.Name);
+                    break;
+                case "user":
                     users = users.OrderBy(s => s.UserName);
                     break;
-                case "user_name":
-                    users = users.OrderBy(s => s.UserName);
+                case "user_desc":
+                    users = users.OrderByDescending(s => s.UserName);
                     break;
                 default:
-                    users = users.OrderByDescending(s => s.UserName);
+                    users = users.OrderBy(s => s.Name);
                     break;
             }
 
-            return View(await users.AsNoTracking().ToListAsync());
+            return View(await PaginatedList<User>.CreateAsync(users.AsNoTracking(), page ?? 1, pageSize));
         }
     }
 }
