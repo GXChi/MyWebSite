@@ -39,5 +39,5 @@ namespace MyWebSite
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-    }
+    }   
 }
