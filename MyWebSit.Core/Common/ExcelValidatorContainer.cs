@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MyWebSite.Core.Common
 {
+    /// <summary>
+    /// Excel验证容器
+    /// </summary>
     public class ExcelValidatorContainer
     {
         public int HeadRowNo { get; set; }
@@ -14,15 +17,15 @@ namespace MyWebSite.Core.Common
 
         public int DynamicStartColNo { get; set; }
 
-        public SortedDictionary<int, IValidators> FormatValidators { get; set; } = new SortedDictionary<int, IValidators>();
-
-        public List<InvokerInfo> ExtValidators { get; set; } = new List<InvokerInfo>();
-
         public SortedDictionary<int, string> ColsName { get; set; } = new SortedDictionary<int, string>();
 
         public SortedDictionary<int, string> ColsDesc { get; set; } = new SortedDictionary<int, string>();
 
         public SortedDictionary<int, string> ColsType { get; set; } = new SortedDictionary<int, string>();
+
+        public SortedDictionary<int, IValidators> FormatValidators { get; set; } = new SortedDictionary<int, IValidators>();
+
+        public List<InvokerInfo> ExtValidators { get; set; } = new List<InvokerInfo>();
 
     }
 }

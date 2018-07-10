@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MyWebSite.Core.Common
 {
+    /// <summary>
+    /// 调用信息
+    /// </summary>
     public class InvokerInfo
     {
         /// <summary>

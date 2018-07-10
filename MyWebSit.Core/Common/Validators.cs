@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace MyWebSite.Core.Common
 {
     /// <summary>
-    /// 验证器基类
+    /// 验证器接口
     /// </summary>
     public interface IValidators
     {
@@ -27,12 +27,11 @@ namespace MyWebSite.Core.Common
         int? length;        //字符串长度       
         string regexString; //正则表达式
         string regexMessage;//正则表达式错误信息提示       
-        string errorMessage;//错误信息
 
         /// <summary>
         /// 错误验证信息
         /// </summary>
-        public string ErrorMessage { get { return errorMessage; } }
+        public string ErrorMessage { get; private set; }
 
         public StringValidator(bool isNecessary, int? length, string regexString, string regexMessage)
         {
@@ -52,19 +51,18 @@ namespace MyWebSite.Core.Common
             bool result = true;
             string tmp = Convert.ToString(obj).Trim();
 
-
             if (string.IsNullOrEmpty(tmp))
             {
                 if (isNecessary)
                 {
                     result = false;
-                    errorMessage = "值不能为空";
+                    ErrorMessage = "值不能为空";
                 }
             }
             else if (length != null && tmp.Length > length)
             {
                 result = false;
-                errorMessage = String.Format("值超长({0})", length);
+                ErrorMessage = String.Format("值不能超过({0})", length);
             }
             else if (!string.IsNullOrEmpty(regexString))
             {
@@ -74,7 +72,7 @@ namespace MyWebSite.Core.Common
                     result = false;
                     if (string.IsNullOrEmpty(regexMessage))
                         regexMessage = "";
-                    errorMessage = $"{tmp}{regexMessage}";
+                    ErrorMessage = $"{tmp}{regexMessage}";
                 }
             }
             return result;
@@ -90,12 +88,11 @@ namespace MyWebSite.Core.Common
         int? length;
         int? minValue;
         int? maxValue;
-        string errormessage;
 
-        public string ErrorMessage
-        {
-            get { return errormessage; }
-        }
+        /// <summary>
+        /// 错误验证信息
+        /// </summary>
+        public string ErrorMessage { get; private set; }
 
         public IntegerValidator(Boolean isNecessary, int? minValue, int? maxValue)
         {
@@ -109,38 +106,43 @@ namespace MyWebSite.Core.Common
         {
             Boolean result = true;
             string tmp = Convert.ToString(obj);
+            int itmp = Convert.ToInt32(tmp);
             if (string.IsNullOrEmpty(tmp))
             {
                 if (isNecessary)
                 {
                     result = false;
-                    errormessage = "值不能为空";
+                    ErrorMessage = "值不能为空";
                 }
             }
-            else
+            else if (length != null && itmp > length)
             {
-                int itmp;
+                result = false;
+                ErrorMessage = String.Format("值不能超过({0})", length);
+            }
+            else
+            {                
                 try
                 {
-                    itmp = Convert.ToInt32(tmp);
                     if (maxValue != null && itmp > maxValue)
                     {
                         result = false;
-                        errormessage = $"值大于最大值{maxValue}";
+                        ErrorMessage = $"值大于最大值{maxValue}";
                     }
                     if (minValue != null && itmp < minValue)
                     {
                         result = false;
-                        errormessage = $"值小于最小值{minValue}";
+                        ErrorMessage = $"值小于最小值{minValue}";
                     }
 
                 }
                 catch
                 {
                     result = false;
-                    errormessage = "值不是整形";
+                    ErrorMessage = "值不是整形";
                 }
             }
+            
             return result;
         }
     }
@@ -150,12 +152,14 @@ namespace MyWebSite.Core.Common
     /// </summary>
     public class DataTimeValidator : IValidators
     {
-        Boolean isNecessary; //是否必须
+        bool isNecessary;    //是否必须
         string regexString;  //正则表达式
         string regexMessage; //正则表达式错误信息提示
-        string errorMessage;
 
-        public string ErrorMessage { get { return errorMessage; } }
+        /// <summary>
+        /// 错误验证信息
+        /// </summary>
+        public string ErrorMessage { get; private set; }
 
         public DataTimeValidator(Boolean isNecessary, string regexString, string regexMessage)
         {
@@ -165,7 +169,7 @@ namespace MyWebSite.Core.Common
         }
 
         /// <summary>
-        /// 日期类型验证器
+        /// 验证
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -178,7 +182,7 @@ namespace MyWebSite.Core.Common
                 if (isNecessary)
                 {
                     result = false;
-                    errorMessage = "值不能为空";
+                    ErrorMessage = "值不能为空";
                 }
             }
             else if (!string.IsNullOrEmpty(regexString) && !string.IsNullOrEmpty(tmp))
@@ -189,28 +193,32 @@ namespace MyWebSite.Core.Common
                     result = false;
                     if (string.IsNullOrEmpty(regexMessage))
                         regexMessage = "";
-                    errorMessage = $"{regexMessage},{tmp}";
+                    ErrorMessage = $"{regexMessage},{tmp}";
                 }
             }
             else
             {
                 try
                 {
-                    result = NPOI.SS.UserModel.DateUtil.IsCellDateFormatted((NPOI.SS.UserModel.ICell)obj);
+                    result = Npoi.Core.SS.UserModel.DateUtil.IsCellDateFormatted((Npoi.Core.SS.UserModel.ICell)obj);
                     if (!result)
                     {
-                        errorMessage = "值不是日期类型";
+                        ErrorMessage = "值不是日期类型";
                     }
+
+                    //DateTime.TryParseExact(tmp, "yyyy-dd-mm HH:mm:ss");
+                    //Convert.ToDateTime(tmp);
                 }
                 catch
                 {
                     result = false;
-                    errorMessage = "值不是日期类型";
+                    ErrorMessage = "值不是日期类型";
                 }
             }
             return result;
         }
     }
+
     /// <summary>
     /// 数字验证器
     /// </summary>
@@ -218,9 +226,11 @@ namespace MyWebSite.Core.Common
     {
         Boolean isNecessary;
         int? decimals;       //字符串长度
-        string errorMessage;
 
-        public string ErrorMessage { get { return errorMessage; } }
+        /// <summary>
+        /// 错误验证信息
+        /// </summary>
+        public string ErrorMessage { get; private set; }
 
         public DecimalValidator(bool isNecessary, int? decimals)
         {
@@ -245,7 +255,7 @@ namespace MyWebSite.Core.Common
                     if (isNecessary)
                     {
                         result = false;
-                        errorMessage = "值不能为空";
+                        ErrorMessage = "值不能为空";
                     }
                 }
                 else
@@ -256,7 +266,7 @@ namespace MyWebSite.Core.Common
                         if (!string.IsNullOrEmpty(mTmp) && mTmp.Length > decimals)
                         {
                             result = false;
-                            errorMessage = $"小数位不能超过{decimals.Value}";
+                            ErrorMessage = $"小数位不能超过{decimals.Value}";
                         }
                         if (result)
                         {
@@ -267,7 +277,7 @@ namespace MyWebSite.Core.Common
                             catch
                             {
                                 result = false;
-                                errorMessage = "值不是实数类型";
+                                ErrorMessage = "值不是实数类型";
                             }
                         }
                     }
