@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyWebSite.Domain;
 using MyWebSite.Domain.IRepositories;
 
 namespace MyWebSite.Controllers
@@ -26,11 +27,11 @@ namespace MyWebSite.Controllers
 
         public IActionResult GetById(string id)
         {
-            _logger.LogInformation("日志{}", id);
+            _logger.LogInformation(LoggingEvents.GetItem,"日志{ID}", id);
             var item = _todoRepository.Find(id);
             if (item == null)
             {
-                _logger.LogWarning("GetById({}) Not Found", id);
+                _logger.LogWarning(LoggingEvents.GetItemNotFound,"GetById({ID}) Not Found",id);
                 return NotFound();
             }
 

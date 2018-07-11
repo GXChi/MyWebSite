@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyWebSit.Domain.Common.GridPager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,6 +22,7 @@ namespace MyWebSite.Domain.IRepositories
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
     public interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : Entity<TPrimaryKey>
     {
+        #region 
         /// <summary>
         /// 获取实体集合
         /// </summary>
@@ -32,7 +34,7 @@ namespace MyWebSite.Domain.IRepositories
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <returns></returns>
-        TEntity Get(TPrimaryKey id);
+        TEntity GetById(TPrimaryKey id);
 
         /// <summary>
         /// 根据lambda表达式获取实体集合
@@ -94,6 +96,13 @@ namespace MyWebSite.Domain.IRepositories
         void Delete(Expression<Func<TEntity, bool>> predicate, bool autoSave = true);
 
         /// <summary>
+        /// 事务性保存
+        /// </summary>
+        void Save();
+        #endregion
+
+        #region 分页查询
+        /// <summary>
         /// 分页获取数据
         /// </summary>
         /// <param name="startPage">起始页</param>
@@ -104,7 +113,16 @@ namespace MyWebSite.Domain.IRepositories
         /// <returns></returns>
         IQueryable<TEntity> LoadPageList(int startPage, int pageSize, out int rowCount, Expression<Func<TEntity, bool>> where, Expression<Func<TEntity, object>> order);
 
-        void Save();
+        PagedObject<TEntity> GetPageList(GridPagerObject filter);
+
+        PagedObject<TEntity> GetPageList(IQueryable<TEntity> source, GridPagerObject filter);
+
+        PagedObject<TEntity> GetPageList(GridPagerObject filter, string includes);
+
+        PagedObject<TEntity> GetPageList(GridPagerObject filter, Expression<Func<TEntity, bool>> expression);
+
+        PagedObject<TEntity> GetPageList(GridPagerObject filter, IQueryable<TEntity> source, Expression<Func<TEntity,bool>> expression);
+        #endregion
     }
 
     /// <summary>

@@ -1,4 +1,8 @@
-﻿using MyWebSite.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using MyWebSit.Domain.Common.GridPager;
+using MyWebSite.Domain;
+using MyWebSite.Domain.Common.Extensions;
+using MyWebSite.Domain.Common.Query;
 using MyWebSite.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -20,6 +24,7 @@ namespace MyWebSit.Core.Repositories
         /// 定义数据访问上下文对象
         /// </summary>
         protected readonly MyWebSiteDbContext _dbContext;
+        protected readonly DbSet<TEntity> _dbSet;
 
         /// <summary>
         /// 通过构造函数注入得到数据上下文对象实例
@@ -28,6 +33,7 @@ namespace MyWebSit.Core.Repositories
         public RepositoryBase(MyWebSiteDbContext dbContext)
         {
             _dbContext = dbContext;
+            _dbSet = dbContext.Set<TEntity>();
         }
 
         #region 获取实体
@@ -38,7 +44,8 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public List<TEntity> GetAll()
         {
-            return _dbContext.Set<TEntity>().ToList();
+            return _dbSet.ToList();
+            //return _dbContext.Set<TEntity>().ToList();
         }
     
         /// <summary>
@@ -46,10 +53,10 @@ namespace MyWebSit.Core.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public TEntity Get(TPrimaryKey id)
+        public TEntity GetById(TPrimaryKey id)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefault(CreateEqualityExpressionForId(id));
-
+            return _dbSet.FirstOrDefault(CreateEqualityExpressionForId(id));
+            //return _dbSet.Find(id);
         }
 
         /// <summary>
@@ -59,7 +66,12 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbContext.Set<TEntity>().Where(predicate).ToList();
+            if (predicate != null)
+            {
+                return _dbSet.Where(predicate).ToList();
+            }
+            return _dbSet.ToList();
+            
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
         /// <summary>
@@ -69,7 +81,7 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefault(predicate);
+            return _dbSet.FirstOrDefault(predicate);
         }
 
         /// <summary>
@@ -98,20 +110,19 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public TEntity Insert(TEntity entity, bool autoSave = true)
         {
-            _dbContext.Set<TEntity>().Add(entity);
+            #region Argument Validation
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            #endregion
+
+            _dbSet.Add(entity);
             if (autoSave)
                 Save();
             return entity;
         }
-
-        public void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)
-        {
-            foreach (var item in typeof(T).GetProperties())
-            {
-                item.SetValue(pTargetObjDest, item.GetValue(pTargetObjSrc, new object[] { }));
-            }
-        }
-
+     
         /// <summary>
         /// 更新实体
         /// </summary>
@@ -119,8 +130,14 @@ namespace MyWebSit.Core.Repositories
         /// <param name="autoSave">是否自动保存</param>
         /// <returns></returns>
         public TEntity Update(TEntity entity, bool autoSave = true)
-        {
-            var obj = Get(entity.Id);
+        {            
+            #region Argument Validation
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            #endregion
+            var obj = GetById(entity.Id);
             EntityToEntity(entity, obj);
             if (autoSave)
                 Save();
@@ -135,10 +152,25 @@ namespace MyWebSit.Core.Repositories
         /// <returns></returns>
         public TEntity InsertOrUpdate(TEntity entity, bool autoSave = true)
         {
-            if (Get(entity.Id) == null)
+            #region Argument Validation
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            #endregion
+            if (GetById(entity.Id) == null)
                 return Insert(entity, autoSave);
             return Update(entity, autoSave);
         }
+
+        public void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)
+        {
+            foreach (var item in typeof(T).GetProperties())
+            {
+                item.SetValue(pTargetObjDest, item.GetValue(pTargetObjSrc, new object[] { }));
+            }
+        }
+
         #endregion
 
         #region 删除实体
@@ -149,7 +181,13 @@ namespace MyWebSit.Core.Repositories
         /// <param name="autoSave">是否立即执行保存</param>
         public void Delete(TEntity entity, bool autoSave = true)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
+            #region Argument Validation
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            #endregion
+            _dbSet.Remove(entity);
             if (autoSave)
                 Save();
         }
@@ -161,7 +199,14 @@ namespace MyWebSit.Core.Repositories
         /// <param name="autoSave">是否立即执行保存</param>
         public void Delete(TPrimaryKey id, bool autoSave = true)
         {
-            _dbContext.Set<TEntity>().Remove(Get(id));
+            #region Argument Validation
+            if (id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
+            #endregion
+
+            _dbSet.Remove(GetById(id));
             if(autoSave)
                 Save();
         }
@@ -173,11 +218,19 @@ namespace MyWebSit.Core.Repositories
         /// <param name="autoSave"></param>
         public void Delete(Expression<Func<TEntity, bool>> where, bool autoSave = true)
         {
-            _dbContext.Set<TEntity>().Where(where).ToList().ForEach(it => _dbContext.Set<TEntity>().Remove(it));
+            _dbSet.Where(where).ToList().ForEach(it => _dbContext.Set<TEntity>().Remove(it));
             if (autoSave)
                 Save();
         }
         #endregion
+
+        /// <summary>
+        /// 事务性保存
+        /// </summary>
+        public void Save()
+        {
+            _dbContext.SaveChanges();
+        }
 
 
         /// <summary>
@@ -203,14 +256,75 @@ namespace MyWebSit.Core.Repositories
             return result.Skip((startPage - 1) * pageSize).Take(pageSize);
         }
 
-        /// <summary>
-        /// 事务性保存
-        /// </summary>
-        public void Save()
+        protected virtual PagedObject<TEntity> GetPageList(GridPagerObject filter, IQueryable<TEntity> source)
         {
-            _dbContext.SaveChanges();
+            var result = source;
+
+            //去掉值为空的查询条
+            if (filter.QueryModel != null && filter.QueryModel.Items.Count > 0)
+            {
+                filter.QueryModel.Items.RemoveAll(x => x.Value == null || string.IsNullOrEmpty(x.Value.ToString()));
+            }
+
+            if (filter.QueryModel != null && filter.QueryModel.Items.Count > 0)
+            {
+                result = result.Where(filter.QueryModel);
+            }
+            if (!string.IsNullOrWhiteSpace(filter.SortCloumnName))
+            {
+                result = result.OrderBy(filter.SortCloumnName, (string.IsNullOrEmpty(filter.SortOrder) ? true : filter.SortOrder.ToLower() == "asc"));
+            }
+            else if (string.IsNullOrWhiteSpace(filter.SortCloumnName) && filter.OrderModel != null && filter.OrderModel.Items.Count > 0)
+            {
+                var orderModel = filter.OrderModel.Items.FirstOrDefault();
+                result = result.OrderBy(orderModel.SortCloumnName, (string.IsNullOrEmpty(orderModel.SortOrder) ? true : orderModel.SortOrder.ToLower() == "asc"));
+                filter.OrderModel.Items.RemoveAt(0);
+            }
+            //判断是多列排序条件
+            if (filter.OrderModel != null && filter.OrderModel.Items.Count > 0)
+            {
+                foreach (var item in filter.OrderModel.Items)
+                {
+                    result = result.ThenBy(item.SortCloumnName, (string.IsNullOrEmpty(item.SortOrder) ? true : item.SortOrder.ToLower() == "asc"));
+                }
+            }
+
+            var totalCount = result.Count();
+            result = result.Skip((filter.CurrentPage - 1) * filter.RowsPerPage).Take(filter.RowsPerPage);
+
+            return new PagedObject<TEntity>()
+            {
+                ObjectList = result.ToList(),
+                TotalCount = totalCount,
+                GridPager = filter
+            };
+
+        }
+       
+        public PagedObject<TEntity> GetPageList(GridPagerObject filter)
+        {
+            throw new NotImplementedException();
         }
 
+        public PagedObject<TEntity> GetPageList(IQueryable<TEntity> source, GridPagerObject filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedObject<TEntity> GetPageList(GridPagerObject filter, string includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedObject<TEntity> GetPageList(GridPagerObject filter, Expression<Func<TEntity, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedObject<TEntity> GetPageList(GridPagerObject filter, IQueryable<TEntity> source, Expression<Func<TEntity, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>
