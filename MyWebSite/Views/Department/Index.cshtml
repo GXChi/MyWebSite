@@ -2,9 +2,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-@using MyWebSite.Domain.Entities;
-@using MyWebSite.Application.Dto;
-@model PaginatedList<User>
+@using MyWebSite.Application.DepartmentApp.Dtos;
+@model List<DepartmentDto>
 
 <form asp-action="Index">
     <div class="from-actions no-color">
@@ -21,10 +20,10 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">姓名</a>
             </th>
             <th>
-                密码
+                管理
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">用户名</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">创建时间</a>
             </th>
             <th></th>
         </tr>
@@ -37,10 +36,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PassWrod)
+                    @Html.DisplayFor(modelItem => item.Manager)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
+                    @Html.DisplayFor(modelItem => item.CreateTime)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -51,50 +50,17 @@
         }
     </tbody>
 </table>
-
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNexPage ? "disabled" : "";
-}
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button>
 <div>
-    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-Page="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @prevDisabled">
-        Previous
-    </a>
-    <a id="index1" asp-route-Page="1" class="btn btn-default">
-        1
-    </a>
-    <a asp-action="Index" asp-route-Page="2" class="btn btn-default">
-        2
-    </a>
-    <a asp-action="Index" asp-route-Page="3" class="btn btn-default">
-        3
-    </a>
-    <a asp-action="Index" asp-route-Page="4" class="btn btn-default">
-        4
-    </a>
-    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-Page="@(Model.PageIndex + 1) "
-       asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @nextDisabled">
-        Next
-    </a>
-    <input name="pageIndex" />
-    <select class="btn btn-default" id="pageSize">
-        <option>1</option>
-        <option>5</option>
-        <option>10</option>
-        <option>20</option>
-        <option>50</option>
-    </select>
-    <label>共 @Model.TotalCount 条数据，@Model.TotalPages 页，当前第 @Model.PageIndex 页 ，每页 @Model.CurrentPage 条</label>
+    <button data-toggle="modal" data-target="#myModal">新增</button>
 </div>
-
-
-
 <div>
-    <a asp-action="Create">
-        <span class="btn btn-success" aria-hidden="true">新增</span>
-    </a>
+    @Html.Partial("_Create")
 </div>
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script src="~/js/bootstrap.js"></script>
+
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(function () {
@@ -134,7 +100,4 @@
 
         });
     });
-
-
-
 </script>
