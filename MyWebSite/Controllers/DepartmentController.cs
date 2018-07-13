@@ -35,6 +35,14 @@ namespace MyWebSite.Controllers
             return RedirectToAction("Index", "Department");
         }
 
+        [HttpPost]
+        public IActionResult GetById(Guid id)
+        {
+            var department = _departmentAppService.GetById(id);
+            return Json(department);
+        }
+        
+        [HttpPost]
         public IActionResult Update(DepartmentDto department)
         {
             _departmentAppService.Update(department);

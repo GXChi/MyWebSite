@@ -1,10 +1,10 @@
-﻿<div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="edit_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" asp-action="Create" class="form-element">
+            <form method="post" asp-action="Update" class="form-element">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title text-center" id="myModalLabel">新增部门</h3>
+                    <h3 class="modal-title text-center" id="myModalLabel">编辑部门</h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -13,7 +13,7 @@
                                 <label>名称</label>
                             </div>
                             <div class="col-xs-8">
-                                <input type="text" name="name" class="form-control" />
+                                <input type="text" id="name" name="name" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                                 <label>编码</label>
                             </div>
                             <div class="col-xs-8">
-                                <input type="text" name="code" class="form-control" />
+                                <input type="text" id="code" name="code" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                                 <label>负责人</label>
                             </div>
                             <div class="col-xs-8">
-                                <input type="text" name="manager" class="form-control" />
+                                <input type="text" id="manager" name="manager" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -43,10 +43,11 @@
                                 <label>联系电话</label>
                             </div>
                             <div class="col-xs-8">
-                                <input type="text" name="ContactNumber" class="form-control" />
+                                <input type="text" id="contactNumber" name="contactNumber" class="form-control" />
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="id" id="guid"/>
                     <input type="hidden" name="createTime" class="form-control" value="@DateTime.Now" />
                 </div>
                 <div class="modal-footer">

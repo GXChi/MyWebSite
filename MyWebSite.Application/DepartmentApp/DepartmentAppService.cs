@@ -23,6 +23,7 @@ namespace MyWebSite.Application.DepartmentApp
             _departmentRepository.Delete(id);
         }
 
+
         public List<DepartmentDto> GetAll()
         {
            return Mapper.Map<List<DepartmentDto>>(_departmentRepository.GetAll());

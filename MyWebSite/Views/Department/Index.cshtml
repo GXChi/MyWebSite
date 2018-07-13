@@ -42,29 +42,61 @@
                     @Html.DisplayFor(modelItem => item.CreateTime)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a id="department_edit" value="@item.Id" data-toggle="modal" data-target="#edit_model">编辑</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">详细</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">删除</a>
                 </td>
+                <td>
+                    <input value="@item.Id" type="text" />
+                </td>
+
             </tr>
+
         }
     </tbody>
 </table>
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button>
 <div>
-    <button data-toggle="modal" data-target="#myModal">新增</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#create_modal">新增</button>
 </div>
 <div>
     @Html.Partial("_Create")
+    @Html.Partial("_Edit")
 </div>
-<script src="~/js/jquery-2.1.4.min.js"></script>
-<script src="~/js/bootstrap.js"></script>
-
-
-<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/jquery.js"></script>
 <script>
     $(function () {
-        $("#")
+        function Edit(id) {
+            $.ajax({
+                type: "post",
+                url: "/Department/GetById/",
+                data: { id: departmentId },
+                success: function (department) {
+                    alert(department);
+                    //$("#name").val(department.name);
+                    //$("#code").val(department.Code);
+                    //$("#manager").val(department.Manager);
+                    //$("#ontactNumber").val(department.ContactNumber);
+                }
+
+            })
+        }
+
+        $("#department_edit").click(function () {
+            var departmentId = $("#department_edit").attr("value");
+            $.ajax({
+                type: "post",
+                url: "/Department/GetById/",
+                data: { id: departmentId },
+                success: function (department) {
+                    $("#name").val(department.name);
+                    $("#code").val(department.code);
+                    $("#manager").val(department.manager);
+                    $("#contactNumber").val(department.contactNumber);
+                    $("#guid").val(department.id)
+                }
+
+            })
+        });
         $("#search").click(function () {
             var searchString = $("[name='searchString']").val();
             $.ajax({
