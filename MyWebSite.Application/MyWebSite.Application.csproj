@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="NPOI" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

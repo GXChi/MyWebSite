@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@using MyWebSite.Application.DepartmentApp.Dtos;
+@model List<DepartmentDto>
+
+<form asp-action="Index">
+    <div class="from-actions no-color">
+        <input type="text" name="searchString" />
+        <input type="submit" value="搜索" id="search" />
+        <a asp-action="Index">Back To Full List</a>
+
+    </div>
+</form>
+<table class="table" style="background-color:rgba(233, 231, 221, 0.15)">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">姓名</a>
+            </th>
+            <th>
+                管理
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">创建时间</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateTime)
+                </td>
+                <td>
+                    <a id="department_edit" value="@item.Id" data-toggle="modal" data-target="#edit_model">编辑</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">详细</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">删除</a>
+                </td>
+                <td>
+                    <input value="@item.Id" type="text" />
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+<div>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#create_modal">新增</button>
+</div>
+<div>
+    @Html.Partial("_Create")
+    @Html.Partial("_Edit")
+</div>
+<script src="~/js/jquery.js"></script>
+<script>
+    $(function () {
+        function Edit(id) {
+            $.ajax({
+                type: "post",
+                url: "/Department/GetById/",
+                data: { id: departmentId },
+                success: function (department) {
+                    alert(department);
+                    //$("#name").val(department.name);
+                    //$("#code").val(department.Code);
+                    //$("#manager").val(department.Manager);
+                    //$("#ontactNumber").val(department.ContactNumber);
+                }
+
+            })
+        }
+
+        $("#department_edit").click(function () {
+            var departmentId = $("#department_edit").attr("value");
+            $.ajax({
+                type: "post",
+                url: "/Department/GetById/",
+                data: { id: departmentId },
+                success: function (department) {
+                    $("#name").val(department.name);
+                    $("#code").val(department.code);
+                    $("#manager").val(department.manager);
+                    $("#contactNumber").val(department.contactNumber);
+                    $("#guid").val(department.id)
+                }
+
+            })
+        });
+        $("#search").click(function () {
+            var searchString = $("[name='searchString']").val();
+            $.ajax({
+                type: "get",
+                url: "/User/Index",
+                data: { searchString: searchString }
+            });
+
+        });
+
+        $("#pageSize").change(function () {
+            $.ajax({
+                type: "post",
+                url: "/User/Index/pageSize=",
+                data: { pageSize: $(this).val() },
+                success: function () {
+                    //location.reload();
+
+                }
+
+            })
+            //$.post("/User/Index", {pageSize:$(this).val()})
+            //alert($(this).val());
+        });
+
+        $("#index1").click(function () {
+            $.ajax({
+                type: "get",
+                url: "User/Index",
+                data: { page: "1", pageSize: "3" },
+
+            })
+
+        });
+    });
+</script>

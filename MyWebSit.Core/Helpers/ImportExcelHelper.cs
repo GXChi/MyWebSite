@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using MyWebSite.Core.Common;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
+using Npoi.Core.HSSF.UserModel;
+using Npoi.Core.SS.UserModel;
+using Npoi.Core.XSSF.UserModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,14 +28,14 @@ namespace MyWebSit.Core.Helpers
             FileStream file = new FileStream(importFileName, FileMode.Open, FileAccess.Read); 
             
             string fileType = importFileName.Substring(importFileName.LastIndexOf("."));
-            //if (fileType == ".xls")
-            //{
-            //    workbook = new HSSFWorkbook(file);                                                                                         
-            //}
-            //else if (fileType == ".xlsx")
-            //{
-            //    workbook = new XSSFWorkbook(file);
-            //}
+            if (fileType == ".xls")
+            {
+                workbook = new HSSFWorkbook(file);
+            }
+            else if (fileType == ".xlsx")
+            {
+                workbook = new XSSFWorkbook(file);
+            }
             container = ExcelValidatorFactory.GetValidator(excelID);
            
         }
@@ -44,37 +44,37 @@ namespace MyWebSit.Core.Helpers
         {
             Boolean result = true;
             errMsgList = new List<string>();
+
             //创建扩展验证器
+            foreach (InvokerInfo info in container.ExtValidators)
+            {
+                try
+                {
+                    Assembly ass = Assembly.Load(info.Assembly);
+                    Type t = ass.GetType(info.ClassName, true);
+                    typeHashtable.Add(info.ClassName, Activator.CreateInstance(t));
 
-            //foreach (InvokerInfo info in container.ExtValidators)
-            //{
-            //    try
-            //    {
-            //        Assembly ass = Assembly.Load(info.Assembly);
-            //        Type t = ass.GetType(info.ClassName, true);
-            //        typeHashtable.Add(info.ClassName, Activator.CreateInstance(t));
-
-            //        List<Type> typeList = new List<Type>();
-            //        for (int i = 0; i < info.ParamsType.Count; i++)
-            //        {
-            //            switch (info.ParamsType[i].ToUpper())
-            //            {
-            //                case "STRING":
-            //                    typeList.Add(typeof(string));
-            //                    break;
-            //                default:
-            //                    throw new Exception();
-            //            }
-            //        }
-            //        MethodInfo methodInfo = t.GetMethod(info.MethodName, typeList.ToArray());
-            //        methodHashtable.Add(info.MethodName, methodInfo);
-            //    }
-            //    catch(Exception ex)
-            //    {
-            //        result = false;
-            //        throw ex;
-            //    }
-            //}
+                    List<Type> typeList = new List<Type>();
+                    for (int i = 0; i < info.ParamsType.Count; i++)
+                    {
+                        switch (info.ParamsType[i].ToUpper())
+                        {
+                            case "STRING":
+                                typeList.Add(typeof(string));
+                                break;
+                            default:
+                                throw new Exception();
+                        }
+                    }
+                    MethodInfo methodInfo = t.GetMethod(info.MethodName, typeList.ToArray());
+                    methodHashtable.Add(info.MethodName, methodInfo);
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                    throw ex;
+                }
+            }
 
             //验证工作表是否存在
             ISheet st = null;

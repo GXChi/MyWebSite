@@ -18,8 +18,7 @@ namespace MyWebSite.Application.UserApp
         }
         public User CheckUser(string userName, string password)
         {
-            return _userRepository.CheckUser(userName, password);
-            
+            return _userRepository.CheckUser(userName, password);            
         }
 
         public List<UserDto> GetAll()

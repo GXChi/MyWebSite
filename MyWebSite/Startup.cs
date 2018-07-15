@@ -11,6 +11,8 @@ using MyWebSit.Core;
 using MyWebSit.Core.Repositories;
 using MyWebSite.Application;
 using MyWebSite.Application.ArticleApp;
+using MyWebSite.Application.DepartmentApp;
+using MyWebSite.Application.DepartmentApp.Dtos;
 using MyWebSite.Application.UserApp;
 using MyWebSite.Domain.IRepositories;
 
@@ -34,10 +36,16 @@ namespace MyWebSite
             services.AddDbContext<MyWebSiteDbContext>(optios =>
                optios.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IUserAppService, UserAppService>();         
             services.AddScoped<IArticleRepository,ArticleRepository>();
             services.AddScoped<IArticleAppService, ArticleAppService>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDepartmentAppService<DepartmentDto>, DepartmentAppService>();
+
+
             services.AddScoped<ITodoRepository, TodoRepository>();
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

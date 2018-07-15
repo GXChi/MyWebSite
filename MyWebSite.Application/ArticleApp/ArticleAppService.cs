@@ -32,7 +32,7 @@ namespace MyWebSite.Application.ArticleApp
 
         public ArticleDto Get(Guid id)
         {
-            return Mapper.Map<ArticleDto>(_articleRepository.Get(id));
+            return Mapper.Map<ArticleDto>(_articleRepository.GetById(id));
         }
 
         //public List<ArticleDto> GetAllList()
