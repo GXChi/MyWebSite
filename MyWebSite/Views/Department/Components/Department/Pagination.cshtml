@@ -1,0 +1,57 @@
+﻿@using MyWebSite.Domain.Dto
+@model Pagination
+
+@{
+    var rnd = new Random();
+    var r = rnd.Next(0, 10000).ToString();
+    //var isShowPagination = Model.TotalPage > Model.PageSizeOption[0];
+}
+@if (true)
+{
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="form-inline">
+                @if (Model.CurrentPage > 3)
+                {
+                    <button type="button" value="1" onclick="changePage_@(r)(this);" class="btn btn-default">1</button>
+                    if (Model.CurrentPage > 4)
+                    {
+                        <button type="button" class="btn btn-secondary disabled">...</button>
+
+                    }
+                }
+                @for (int i = Model.CurrentPage - 2; i <= Model.CurrentPage + 2; i++)
+                {
+                    if (i < 1)
+                    {
+                        continue;
+                    }
+                    if (i > Model.TotalPage)
+                    {
+                        break;
+                    }
+                    <button type="button" value="@i" onclick="changePage_@(r)(this);" class="btn @(Model.CurrentPage == i ? "btn-secondary disabled" :"btn-primary")"></button>
+                }
+                <input type="text" class="form-control text-center" id="skipPage" />
+                <button type="button" class="btn btn-primary page-button">跳转</button>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-inline">
+                <label style="font-size:14px;font-weight:normal">共 @Model.TotalCount 条记录</label>
+                <select class="form-control" name="PageSize" onchange="changePageSizeOption_@(r)(this);">
+                    @if (Model.PageSizeOption != null)
+                    {
+                        @foreach (var o in Model.PageSizeOption)
+                        {
+                            @(o == Model.CurrentSize ? "select" : "")
+                            <option value="@o">每页@(o)条</option>
+                        }
+                    }
+                    <option value="5">每页5条</option>
+                </select>
+            </div>
+        </div>
+    </div>
+}
+

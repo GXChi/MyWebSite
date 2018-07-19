@@ -4,7 +4,9 @@
 }
 @using MyWebSite.Domain.Entities;
 @using MyWebSite.Application.Dto;
-@model PaginatedList<User>
+@using MyWebSite.Application.UserApp.Dtos;
+@*@model PaginatedList<User>*@
+@model PaginatedList<UserDto>
 
 <form asp-action="Index">
     <div class="from-actions no-color">
@@ -30,7 +32,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <tr>
                 <td>
@@ -85,7 +87,7 @@
         <option>20</option>
         <option>50</option>
     </select>
-    <label>共 @Model.TotalCount 条数据，@Model.TotalPages 页，当前第 @Model.PageIndex 页 ，每页 @Model.CurrentPage 条</label>
+    <label>共 @Model.TotalCount 条数据，@Model.TotalPages 页，当前第 @Model.PageIndex 页 ，每页 @Model.CurrentPage 条 </label>
 </div>
 
 

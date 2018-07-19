@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyWebSit.Core;
+using MyWebSit.Core.Helpers;
 using MyWebSite.Application.Dto;
 using MyWebSite.Application.UserApp;
 using MyWebSite.Application.UserApp.Dtos;
@@ -18,69 +19,83 @@ namespace MyWebSite.Controllers
     {
         private IUserAppService _userAppService;
         private MyWebSiteDbContext _dbContext;
-        private readonly ILogger _logger;
+        //private readonly ILogger _logger;
         private readonly ITodoRepository _todoRepository;
 
-        public UserController(IUserAppService userAppService, MyWebSiteDbContext dbContext, ILogger logger, ITodoRepository todoRepository)
+        public UserController(IUserAppService userAppService, MyWebSiteDbContext dbContext, ITodoRepository todoRepository)
         {
             _userAppService = userAppService;
             _dbContext = dbContext;
-            _logger = logger;
+            //_logger = logger;
             _todoRepository = todoRepository;
         }
-        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? page, int pageSize = 5)
+        //public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? page, int pageSize = 5)
+        //{
+        //    ViewData["CurrentSort"] = sortOrder;
+        //    ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        //    ViewData["DateSortParm"] = sortOrder == "user" ? "user_desc" : "user";
+
+        //    if (searchString != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        searchString = currentFilter;
+        //    }
+
+        //    ViewData["CurrentFilter"] = searchString;
+
+        //    var users = from u in _dbContext.Users
+        //                select u;
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        users = users.Where(u => u.UserName.Contains(searchString) || u.Name.Contains(searchString));
+        //    }
+
+        //    switch (sortOrder)
+        //    {
+        //        case "name_desc":
+        //            users = users.OrderByDescending(s => s.Name);
+        //            break;
+        //        case "user":
+        //            users = users.OrderBy(s => s.UserName);
+        //            break;
+        //        case "user_desc":
+        //            users = users.OrderByDescending(s => s.UserName);
+        //            break;
+        //        default:
+        //            users = users.OrderBy(s => s.Name);
+        //            break;
+        //    }
+
+        //    return View(await PaginatedList<User>.CreateAsync(users.AsNoTracking(), page ?? 1, pageSize));
+        //}
+
+        //public IActionResult GetById(string id)
+        //{
+        //    _logger.LogInformation(LoggingEvents.GetItem, "Getting item {ID}", id);
+        //    var item = _todoRepository.Find(id);
+        //    if (item == null)
+        //    {
+        //        _logger.LogWarning(LoggingEvents.GetItemNotFound, "GetById({ID}) NOT FOUND", id);
+        //        return NotFound();
+        //    }
+        //    return new ObjectResult(item);
+        //}
+
+        public async Task<IActionResult> Index(int? page, int pageSize = 5)
         {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "user" ? "user_desc" : "user";
-
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewData["CurrentFilter"] = searchString;
-
-            var users = from u in _dbContext.Users
-                        select u;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                users = users.Where(u => u.UserName.Contains(searchString) || u.Name.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    users = users.OrderByDescending(s => s.Name);
-                    break;
-                case "user":
-                    users = users.OrderBy(s => s.UserName);
-                    break;
-                case "user_desc":
-                    users = users.OrderByDescending(s => s.UserName);
-                    break;
-                default:
-                    users = users.OrderBy(s => s.Name);
-                    break;
-            }
-
-            return View(await PaginatedList<User>.CreateAsync(users.AsNoTracking(), page ?? 1, pageSize));
-        }
-
-        public IActionResult GetById(string id)
-        {
-            _logger.LogInformation(LoggingEvents.GetItem, "Getting item {ID}", id);
-            var item = _todoRepository.Find(id);
-            if (item == null)
-            {
-                _logger.LogWarning(LoggingEvents.GetItemNotFound, "GetById({ID}) NOT FOUND", id);
-                return NotFound();
-            }
-            return new ObjectResult(item);
+            //var users = from u in _dbContext.Users
+            //            select u;
+            var users =  _userAppService.GetAll();
+            int pageIndex = page ?? 1;
+            var totalCount =  users.Count();
+            var items = users.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            //var dto = new PaginatedList<User>(items, totalCount, pageIndex, pageSize);
+            var totalPages = PagingHelper.GetTotalPage(totalCount,ref pageIndex, ref pageSize);
+            var dto = new PaginatedList<UserDto>(items, totalCount, pageIndex, pageSize, totalPages);
+            return View(dto);
         }
     }
     public class LoggingEvents

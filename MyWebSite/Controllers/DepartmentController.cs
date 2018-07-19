@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyWebSit.Core.Helpers;
 using MyWebSite.Application.DepartmentApp;
 using MyWebSite.Application.DepartmentApp.Dtos;
+using MyWebSite.Application.Dto;
+using MyWebSite.Domain.Dto;
 
 namespace MyWebSite.Controllers
 {
@@ -16,10 +19,12 @@ namespace MyWebSite.Controllers
         {
             _departmentAppService = departmentAppService;
         }
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex = 1, int pageSize = 5)
         {
             var department = _departmentAppService.GetAll();
-            return View(department);
+            var totalPage = PagingHelper.GetTotalPage(department.Count, ref pageIndex, ref pageSize);
+            var dto = new PagedResultDto<DepartmentDto>(department, pageIndex, pageSize, department.Count, totalPage);
+            return View(dto);
         }
 
         [HttpGet]

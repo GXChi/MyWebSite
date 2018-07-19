@@ -36,15 +36,15 @@ namespace MyWebSite
             services.AddDbContext<MyWebSiteDbContext>(optios =>
                optios.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserAppService, UserAppService>();         
-            services.AddScoped<IArticleRepository,ArticleRepository>();
+            services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IArticleAppService, ArticleAppService>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDepartmentAppService<DepartmentDto>, DepartmentAppService>();
 
 
             services.AddScoped<ITodoRepository, TodoRepository>();
-            
+
 
         }
 
@@ -68,6 +68,11 @@ namespace MyWebSite
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "areaRoute",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
             });
 
         }

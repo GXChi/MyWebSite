@@ -1,15 +1,18 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
+
 }
 @using MyWebSite.Application.DepartmentApp.Dtos;
-@model List<DepartmentDto>
+@using MyWebSite.Domain.Dto
+@using MyWebSite.ViewComponents
+
+@model PagedResultDto<DepartmentDto>
 
 <form asp-action="Index">
     <div class="from-actions no-color">
         <input type="text" name="searchString" />
         <input type="submit" value="搜索" id="search" />
-        <a asp-action="Index">Back To Full List</a>
+        <a asp-action="Index" asp-controller="Home">返回</a>
 
     </div>
 </form>
@@ -29,8 +32,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -42,61 +46,41 @@
                     @Html.DisplayFor(modelItem => item.CreateTime)
                 </td>
                 <td>
-                    <a id="department_edit" value="@item.Id" data-toggle="modal" data-target="#edit_model">编辑</a> |
+                    <a onclick="Edit('@item.Id')" data-toggle="modal" data-target="#edit_model">编辑</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">详细</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">删除</a>
                 </td>
-                <td>
-                    <input value="@item.Id" type="text" />
-                </td>
-
             </tr>
-
         }
-    </tbody>
+    </tbody>   
+    @await Component.InvokeAsync(typeof(DepartmentViewComponent), new { viewName = "Pagination", model = Model })
 </table>
+
 <div>
     <button class="btn btn-primary" data-toggle="modal" data-target="#create_modal">新增</button>
 </div>
 <div>
-    @Html.Partial("_Create")
-    @Html.Partial("_Edit")
+    @await Component.InvokeAsync(typeof(DepartmentViewComponent))
+    @await Component.InvokeAsync(typeof(DepartmentViewComponent), new { viewName = "Edit", model = Model })
 </div>
 <script src="~/js/jquery.js"></script>
 <script>
+    //编辑
+    function Edit(id) {
+        $.ajax({
+            type: "post",
+            url: "/Department/GetById/",
+            data: { id: id },
+            success: function (department) {
+                $("#name").val(department.name);
+                $("#code").val(department.code);
+                $("#manager").val(department.manager);
+                $("#contactNumber").val(department.contactNumber);
+            }
+
+        })
+    }
     $(function () {
-        function Edit(id) {
-            $.ajax({
-                type: "post",
-                url: "/Department/GetById/",
-                data: { id: departmentId },
-                success: function (department) {
-                    alert(department);
-                    //$("#name").val(department.name);
-                    //$("#code").val(department.Code);
-                    //$("#manager").val(department.Manager);
-                    //$("#ontactNumber").val(department.ContactNumber);
-                }
-
-            })
-        }
-
-        $("#department_edit").click(function () {
-            var departmentId = $("#department_edit").attr("value");
-            $.ajax({
-                type: "post",
-                url: "/Department/GetById/",
-                data: { id: departmentId },
-                success: function (department) {
-                    $("#name").val(department.name);
-                    $("#code").val(department.code);
-                    $("#manager").val(department.manager);
-                    $("#contactNumber").val(department.contactNumber);
-                    $("#guid").val(department.id)
-                }
-
-            })
-        });
         $("#search").click(function () {
             var searchString = $("[name='searchString']").val();
             $.ajax({
@@ -104,7 +88,6 @@
                 url: "/User/Index",
                 data: { searchString: searchString }
             });
-
         });
 
         $("#pageSize").change(function () {

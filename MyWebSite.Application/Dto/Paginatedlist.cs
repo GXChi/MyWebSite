@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyWebSit.Core.Helpers;
+using MyWebSite.Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace MyWebSite.Application.Dto
 {
-    public class PaginatedList<T> : List<T>
+    public class PaginatedList<T> 
     {
+        public IList<T> Items { get; set; }
         public int PageIndex { get; private set; }
 
         public int TotalPages { get; private set; }
@@ -17,15 +20,25 @@ namespace MyWebSite.Application.Dto
 
         public int CurrentPage { get; set; }
 
-
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(List<T> items, int totalCount, int pageIndex, int pageSize)
         {
-            TotalCount = count;
+            Items = items;
+            TotalPages = PagingHelper.GetTotalPage(totalCount, ref pageIndex, ref pageSize);
+            TotalCount = totalCount;
+            CurrentPage = items.Count();
+            PageIndex = pageIndex;         
+
+            //AddRange(items);
+        }
+        public PaginatedList(List<T> items, int totalCount, int pageIndex, int pageSize,int totalPages)
+        {
+            Items = items;
+            TotalPages = totalPages;
+            TotalCount = totalCount;
             CurrentPage = items.Count();
             PageIndex = pageIndex;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-            AddRange(items);
+            //AddRange(items);
         }
 
         public bool HasPreviousPage
