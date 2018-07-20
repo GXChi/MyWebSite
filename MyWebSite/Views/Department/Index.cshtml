@@ -53,10 +53,11 @@
             </tr>
         }
     </tbody>   
-    @await Component.InvokeAsync(typeof(DepartmentViewComponent), new { viewName = "Pagination", model = Model })
+  
 </table>
 
 <div>
+    @await Component.InvokeAsync(typeof(DepartmentViewComponent), new { viewName = "Pagination", model = Model })
     <button class="btn btn-primary" data-toggle="modal" data-target="#create_modal">新增</button>
 </div>
 <div>

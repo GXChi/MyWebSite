@@ -13,7 +13,7 @@
             <div class="form-inline">
                 @if (Model.CurrentPage > 3)
                 {
-                    <button type="button" value="1" onclick="changePage_@(r)(this);" class="btn btn-default">1</button>
+                    <button type="button" value="1" onclick="changePage_@(r)(this);" class="btn @(Model.CurrentPage == 1 ? "btn-secondary disabled" : "btn-primary") page-button">1</button>
                     if (Model.CurrentPage > 4)
                     {
                         <button type="button" class="btn btn-secondary disabled">...</button>
@@ -30,7 +30,16 @@
                     {
                         break;
                     }
-                    <button type="button" value="@i" onclick="changePage_@(r)(this);" class="btn @(Model.CurrentPage == i ? "btn-secondary disabled" :"btn-primary")"></button>
+                    <button type="button" value="@i" onclick="changePage_@(r)(this);" class="btn @(Model.CurrentPage == i ? "btn-secondary disabled" :"btn-primary")">@i</button>
+                }
+                @if (Model.CurrentPage < Model.TotalCount - 2)
+                {
+                    if (Model.CurrentPage < Model.TotalPage - 3)
+                    { 
+                        <button type="button" class="btn btn-secondary disabled">...</button>
+                    }
+                        <button type="button" value="@Model.TotalPage" onclick="changePage_@(r)(this);" class="btn @(Model.CurrentPage == Model.TotalPage ? "btn-secondary" : "btn-primary") page-button">@Model.TotalPage</button>
+
                 }
                 <input type="text" class="form-control text-center" id="skipPage" />
                 <button type="button" class="btn btn-primary page-button">跳转</button>
@@ -54,4 +63,7 @@
         </div>
     </div>
 }
+<script>
+
+</script>
 

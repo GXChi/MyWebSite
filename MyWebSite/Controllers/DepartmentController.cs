@@ -22,8 +22,9 @@ namespace MyWebSite.Controllers
         public IActionResult Index(int pageIndex = 1, int pageSize = 5)
         {
             var department = _departmentAppService.GetAll();
+            var items = department.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             var totalPage = PagingHelper.GetTotalPage(department.Count, ref pageIndex, ref pageSize);
-            var dto = new PagedResultDto<DepartmentDto>(department, pageIndex, pageSize, department.Count, totalPage);
+            var dto = new PagedResultDto<DepartmentDto>(items, pageIndex, pageSize, department.Count, totalPage);
             return View(dto);
         }
 
